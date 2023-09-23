@@ -1,18 +1,15 @@
-package controllers
+package v1
 
 import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/guilherme-de-marchi/revancce/api/pkg"
 	"github.com/stripe/stripe-go/v75"
 	"github.com/stripe/stripe-go/v75/checkout/session"
 )
 
-type Group struct {
-	Group *gin.RouterGroup
-}
-
-func (g Group) GetProduct() {
+func (g group) GetProduct() {
 	g.Group.GET("/product/:id", getProduct)
 }
 
@@ -23,12 +20,11 @@ func getProduct(c *gin.Context) {
 	})
 }
 
-func (g Group) CreateCheckoutSession() {
-	g.Group.POST("/product/:id/create-checkout-session", createCheckoutSession)
+func (g group) Purchase() {
+	g.Group.POST("/product/:id/purchase", purchase)
 }
 
-func createCheckoutSession(c *gin.Context) {
-	domain := "http://localhost:8080"
+func purchase(c *gin.Context) {
 	params := &stripe.CheckoutSessionParams{
 		LineItems: []*stripe.CheckoutSessionLineItemParams{
 			{
@@ -37,14 +33,13 @@ func createCheckoutSession(c *gin.Context) {
 			},
 		},
 		Mode:       stripe.String(string(stripe.CheckoutSessionModePayment)),
-		SuccessURL: stripe.String(domain + "/static/success.html"),
-		CancelURL:  stripe.String(domain + "/static/cancel.html"),
+		SuccessURL: stripe.String(pkg.ServerDomain + pkg.ProductPurchaseRedirectSuccess),
+		CancelURL:  stripe.String(pkg.ServerDomain + pkg.ProductPurchaseRedirectCancel),
 	}
 
 	s, err := session.New(params)
-
 	if err != nil {
-		c.AbortWithError(http.StatusInternalServerError, err)
+		c.AbortWithError(http.StatusInternalServerError, pkg.Error(err))
 		return
 	}
 
