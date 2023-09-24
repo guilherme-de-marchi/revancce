@@ -1,11 +1,8 @@
-package v1
+package repository
 
 import (
 	"encoding/json"
-	"io"
-	"net/http"
 
-	"github.com/gin-gonic/gin"
 	"github.com/guilherme-de-marchi/revancce/api/pkg"
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
 	"github.com/stripe/stripe-go/v75"
@@ -13,49 +10,34 @@ import (
 	wh "github.com/stripe/stripe-go/v75/webhook"
 )
 
-func (g group) Webhook() {
-	g.Group.POST("/webhook", webhook)
-}
-
-func webhook(c *gin.Context) {
-	body, err := io.ReadAll(c.Request.Body)
-	if err != nil {
-		c.AbortWithError(http.StatusInternalServerError, pkg.Error(err))
-		return
-	}
-
+func Webhook(body []byte, stripeSignatureHeader string) error {
 	event, err := wh.ConstructEvent(
 		body,
-		c.GetHeader("Stripe-Signature"),
+		stripeSignatureHeader,
 		pkg.StripeWebhookSecret,
 	)
 	if err != nil {
-		c.AbortWithError(http.StatusUnauthorized, pkg.Error(err))
-		return
+		return pkg.Error(err)
 	}
 
 	switch event.Type {
 	case "payment_intent.succeeded":
 		var paymentIntent stripe.PaymentIntent
 		if err := json.Unmarshal(event.Data.Raw, &paymentIntent); err != nil {
-			c.AbortWithError(http.StatusInternalServerError, pkg.Error(err))
-			return
+			return pkg.Error(err)
 		}
 
 		if paymentIntent.LatestCharge == nil {
-			c.AbortWithError(http.StatusInternalServerError, pkg.Error(pkg.ErrWebhookFieldMalformatted))
-			return
+			return pkg.Error(pkg.ErrWebhookFieldMalformatted)
 		}
 
 		latestCharge, err := charge.Get(paymentIntent.LatestCharge.ID, nil)
 		if err != nil {
-			c.AbortWithError(http.StatusInternalServerError, pkg.Error(err))
-			return
+			return pkg.Error(err)
 		}
 
 		if latestCharge.BillingDetails == nil {
-			c.AbortWithError(http.StatusInternalServerError, pkg.Error(pkg.ErrWebhookFieldMalformatted))
-			return
+			return pkg.Error(pkg.ErrWebhookFieldMalformatted)
 		}
 
 		message := mail.NewSingleEmail(
@@ -74,9 +56,9 @@ func webhook(c *gin.Context) {
 
 		_, err = pkg.Mail.Send(message)
 		if err != nil {
-			c.AbortWithError(http.StatusInternalServerError, pkg.Error(err))
-			return
+			return pkg.Error(err)
 		}
-
 	}
+
+	return nil
 }

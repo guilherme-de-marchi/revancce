@@ -1,30 +1,19 @@
-package v1
+package repository
 
 import (
-	"net/http"
-
-	"github.com/gin-gonic/gin"
 	"github.com/guilherme-de-marchi/revancce/api/pkg"
 	"github.com/stripe/stripe-go/v75"
 	"github.com/stripe/stripe-go/v75/checkout/session"
 )
 
-func (g group) GetProduct() {
-	g.Group.GET("/product/:id", getProduct)
-}
-
-func getProduct(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"id":    c.Param("id"),
+func GetProduct(id string) any {
+	return map[string]any{
+		"id":    id,
 		"price": 20.0,
-	})
+	}
 }
 
-func (g group) Purchase() {
-	g.Group.POST("/product/:id/purchase", purchase)
-}
-
-func purchase(c *gin.Context) {
+func PurchaseProduct() (*stripe.CheckoutSession, error) {
 	params := &stripe.CheckoutSessionParams{
 		LineItems: []*stripe.CheckoutSessionLineItemParams{
 			{
@@ -38,10 +27,5 @@ func purchase(c *gin.Context) {
 	}
 
 	s, err := session.New(params)
-	if err != nil {
-		c.AbortWithError(http.StatusInternalServerError, pkg.Error(err))
-		return
-	}
-
-	c.Redirect(http.StatusSeeOther, s.URL)
+	return s, pkg.Error(err)
 }

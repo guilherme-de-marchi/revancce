@@ -1,41 +1,19 @@
 package main
 
 import (
-	"context"
 	"log"
 
 	"github.com/gin-gonic/gin"
-	v1 "github.com/guilherme-de-marchi/revancce/api/controllers/v1"
-	"github.com/guilherme-de-marchi/revancce/api/pkg"
-	"github.com/redis/go-redis/v9"
-	"github.com/sendgrid/sendgrid-go"
-	"github.com/stripe/stripe-go/v75"
+	"github.com/guilherme-de-marchi/revancce/api"
 )
 
 func main() {
-	ctx := context.Background()
+	e := gin.Default()
+	e.Static("/static", "./web/public")
 
-	stripe.Key = pkg.StripeSecretKey
-
-	pkg.Memory = redis.NewClient(&redis.Options{
-		Addr:     pkg.RedisAddr,
-		Password: pkg.RedisPassword,
-	})
-	if err := pkg.Memory.Ping(ctx).Err(); err != nil {
-		log.Fatalln(err)
+	if err := api.Setup(e); err != nil {
+		log.Fatal(err)
 	}
 
-	pkg.Mail = sendgrid.NewSendClient(pkg.SendGridSecretKey)
-
-	// pkg.Config = pkg.ConfigData{
-	// 	Memory: redisClient,
-	// 	Mail:   sendGridClient,
-	// }
-
-	r := gin.Default()
-	r.Static("/static", "./web/public")
-
-	v1.Set(r.Group("/api/v1"))
-
-	r.Run(":8080")
+	e.Run(":8080")
 }
