@@ -12,19 +12,19 @@ var (
 	ErrWebhookFieldMalformatted = errors.New("webhook field malformatted")
 )
 
-type err struct {
-	err   error
+type Err struct {
+	Err   error
 	Msg   string   `json:"msg"`
 	Paths []string `json:"paths"`
 }
 
-func (e err) Error() string {
+func (e Err) Error() string {
 	d, _ := json.Marshal(e)
 	return string(d)
 }
 
-func (e err) Is(target error) bool {
-	return e.err == target
+func (e Err) Is(target error) bool {
+	return e.Err == target
 }
 
 func Error(e error) error {
@@ -36,10 +36,10 @@ func Error(e error) error {
 	here := fmt.Sprintf("%s:%v", filename, line)
 	here = here[strings.Index(here, "/revancce/"):]
 
-	newE, ok := e.(err)
+	newE, ok := e.(Err)
 	if !ok {
-		return err{
-			err:   e,
+		return Err{
+			Err:   e,
 			Msg:   e.Error(),
 			Paths: []string{here},
 		}
@@ -47,4 +47,8 @@ func Error(e error) error {
 
 	newE.Paths = append(newE.Paths, here)
 	return e
+}
+
+func ErrorMsg(msg string) any {
+	return map[string]string{"error": msg}
 }

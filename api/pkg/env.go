@@ -19,6 +19,8 @@ var (
 	SendGridPurchasesEmail = os.Getenv("SENDGRID_PURCHASES_EMAIL")
 	SendGridPurchasesName  = os.Getenv("SENDGRID_PURCHASES_NAME")
 
-	RedisAddr     = os.Getenv("REDIS_ADDR")
-	RedisPassword = os.Getenv("REDIS_PASSWORD")
+	DatabaseURL = os.Getenv("DATABASE_URL")
+
+	MemoryAddr     = os.Getenv("MEMORY_ADDR")
+	MemoryPassword = os.Getenv("MEMORY_PASSWORD")
 )
