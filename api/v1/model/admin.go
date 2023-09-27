@@ -30,16 +30,27 @@ func (v AdminLoginReq) Validate() error {
 	return nil
 }
 
-type AdminLoginResp struct {
+type AdminLoginIn struct {
+	Name     string
+	Password string
+}
+
+type AdminLoginOut struct {
 	Token     string    `json:"token"`
 	ExpiresAt time.Time `json:"expires_at"`
 }
 
 type AdminRegisterReq struct {
-	Name                *string `json:"name"`
-	Email               *string `json:"email"`
-	Password            *string `json:"password"`
-	HeaderAuthorization string
+	Name     *string `json:"name"`
+	Email    *string `json:"email"`
+	Password *string `json:"password"`
+}
+
+type AdminRegisterIn struct {
+	Name     string
+	Email    string
+	Password string
+	ID       string
 }
 
 func (v AdminRegisterReq) Validate() error {
@@ -65,10 +76,6 @@ func (v AdminRegisterReq) Validate() error {
 
 	if len(*v.Password) > 20 {
 		return errors.New("field 'password' too large")
-	}
-
-	if len(v.HeaderAuthorization) == 0 {
-		return errors.New("header 'Authorization' is empty")
 	}
 
 	return nil

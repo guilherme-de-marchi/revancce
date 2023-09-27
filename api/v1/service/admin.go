@@ -14,8 +14,8 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func AdminLogin(ctx context.Context, req model.AdminLoginReq) (int, any) {
-	resp, err := repository.AdminLogin(ctx, req)
+func AdminLogin(ctx context.Context, in model.AdminLoginIn) (int, any) {
+	resp, err := repository.AdminLogin(ctx, in)
 	if err == nil {
 		return http.StatusOK, resp
 	}
@@ -35,8 +35,8 @@ func AdminLogin(ctx context.Context, req model.AdminLoginReq) (int, any) {
 	return status, pkg.ErrorMsg(err.Error())
 }
 
-func AdminRegister(ctx context.Context, req model.AdminRegisterReq) (int, any) {
-	err := repository.AdminRegister(ctx, req)
+func AdminRegister(ctx context.Context, in model.AdminRegisterIn) (int, any) {
+	err := repository.AdminRegister(ctx, in)
 	if err == nil {
 		return http.StatusCreated, nil
 	}

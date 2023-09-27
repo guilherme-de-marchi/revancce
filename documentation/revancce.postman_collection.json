@@ -1,0 +1,114 @@
+{
+	"info": {
+		"_postman_id": "e5946397-280a-4e03-a729-b5acbcffb8fa",
+		"name": "revancce",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "v1",
+			"item": [
+				{
+					"name": "admin register",
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "value",
+									"value": "2a633526af7339fada46face8062740a1adaa90091e096b7db1b79c711dbcd60e061d02f40db78ec5c9ba1692a7f4141855f3e8f0386fc399dc0c813dc3d7330b050af6a5256831481155eedd66c55d859c199bb9b96b697c8384676ff4aeb5360c4183ef41dbbf9a0407eccbd255e89a8b86ccb94058b79943ec0706c324a253c825a284c4d28b76375a742b2ab77c3e1d4aea6383c24f905223c26da511b03c640d465648c4c4f50e385d84fce9783747fc739b0f7405162a6ed1cdb334f2f8b9675017061ca898f6a55cab1523f51a987b248d9bcd582c85db9f15cbe8a4c0552c9e51d0205f7a14452cbc52cbf8c1399120552eea1cbbd98f643ff6f0cb7",
+									"type": "string"
+								},
+								{
+									"key": "key",
+									"value": "Authorization",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"test2222\",\n    \"email\": \"test2@gmail.com\",\n    \"password\": \"test2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{addr}}/api/v1/admin/register",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"test2\",\n    \"password\": \"test2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{addr}}/api/v1/admin/login",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "addr",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}

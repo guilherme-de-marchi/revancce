@@ -25,11 +25,16 @@ func adminLogin(c *gin.Context) {
 		return
 	}
 
-	c.JSON(service.AdminLogin(c, req))
+	in := model.AdminLoginIn{
+		Name:     *req.Name,
+		Password: *req.Password,
+	}
+
+	c.JSON(service.AdminLogin(c, in))
 }
 
 func (c Controllers) AdminRegister() {
-	c.Group.POST("/admin/register", adminRegister)
+	c.Group.POST("/admin/register", pkg.RequireAdminSession, adminRegister)
 }
 
 func adminRegister(c *gin.Context) {
@@ -39,12 +44,23 @@ func adminRegister(c *gin.Context) {
 		return
 	}
 
-	req.HeaderAuthorization = c.GetHeader("Authorization")
-
 	if err := req.Validate(); err != nil {
 		c.JSON(http.StatusBadRequest, pkg.ErrorMsg(err.Error()))
 		return
 	}
 
-	c.JSON(service.AdminRegister(c, req))
+	id := c.GetString("id")
+	if id == "" {
+		c.Status(http.StatusUnauthorized)
+		return
+	}
+
+	in := model.AdminRegisterIn{
+		Name:     *req.Name,
+		Email:    *req.Email,
+		Password: *req.Password,
+		ID:       id,
+	}
+
+	c.JSON(service.AdminRegister(c, in))
 }
