@@ -40,9 +40,9 @@ func AdminRegister(ctx context.Context, in model.AdminRegisterIn) error {
 	}
 
 	_, err = pkg.Database.Exec(ctx, `
-		insert into admins (name, email, password_hash)
-		values ($1, $2, $3)
-	`, in.Name, in.Email, passwordHash)
+		insert into admins (name, email, password_hash, created_by)
+		values ($1, $2, $3, $4)
+	`, in.Name, in.Email, passwordHash, in.ID)
 
 	return pkg.Error(err)
 }
