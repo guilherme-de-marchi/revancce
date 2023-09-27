@@ -10,11 +10,15 @@ import (
 )
 
 func AdminLogin(ctx context.Context, in model.AdminLoginIn) (*model.AdminLoginOut, error) {
-	row := pkg.Database.QueryRow(ctx, `
-		select id, password_hash
-		from admins
-		where name=$1
-	`, in.Name)
+	row := pkg.Database.QueryRow(
+		ctx,
+		`
+			select id, password_hash
+			from admins
+			where name=$1
+		`,
+		in.Name,
+	)
 
 	var id, passwordHash string
 	if err := row.Scan(&id, &passwordHash); err != nil {
@@ -39,10 +43,14 @@ func AdminRegister(ctx context.Context, in model.AdminRegisterIn) error {
 		return pkg.Error(err)
 	}
 
-	_, err = pkg.Database.Exec(ctx, `
+	_, err = pkg.Database.Exec(
+		ctx,
+		`
 		insert into admins (name, email, password_hash, created_by)
 		values ($1, $2, $3, $4)
-	`, in.Name, in.Email, passwordHash, in.ID)
+		`,
+		in.Name, in.Email, passwordHash, in.ID,
+	)
 
 	return pkg.Error(err)
 }

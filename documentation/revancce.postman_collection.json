@@ -16,7 +16,7 @@
 							"apikey": [
 								{
 									"key": "value",
-									"value": "2a633526af7339fada46face8062740a1adaa90091e096b7db1b79c711dbcd60e061d02f40db78ec5c9ba1692a7f4141855f3e8f0386fc399dc0c813dc3d7330b050af6a5256831481155eedd66c55d859c199bb9b96b697c8384676ff4aeb5360c4183ef41dbbf9a0407eccbd255e89a8b86ccb94058b79943ec0706c324a253c825a284c4d28b76375a742b2ab77c3e1d4aea6383c24f905223c26da511b03c640d465648c4c4f50e385d84fce9783747fc739b0f7405162a6ed1cdb334f2f8b9675017061ca898f6a55cab1523f51a987b248d9bcd582c85db9f15cbe8a4c0552c9e51d0205f7a14452cbc52cbf8c1399120552eea1cbbd98f643ff6f0cb7",
+									"value": "1c6a3b154a781f73383b14e540748c8c4d275a73b2af9c055a3568089463c4ef21d5c6f5241c24fc19d6702fb212dc9baa576fe0ed5383af554aa84e4f748ff4cff020317a2ae56085e25a4dbe2fe316014b5ea818a72ffe15fff817fa7008cb308ba80f7ed95a670d87c06022d0bb5e27480025a2c6834da1f2a125554d2626fe9e0b50ceea84f1a7845e50ffdeddec17dc7c2126760fb72d3caddd118b1c1bcc197064d6cf1a0561ccde9c5cdce6b28c24cc2c13d014f9b57dd8f54ea5da717c6220a168765c4a4ce6a19058f9c573e4d154fb8e22deecbe62818a39c9d7f9d0f85b86090a477e2a367eb2abd0a752a13c946cb62cec226ccb9b0f0e967c68",
 									"type": "string"
 								},
 								{
@@ -30,7 +30,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"test2222\",\n    \"email\": \"test2@gmail.com\",\n    \"password\": \"test2\"\n}",
+							"raw": "{\n    \"name\": \"test3\",\n    \"email\": \"test3@gmail.com\",\n    \"password\": \"test3\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -76,6 +76,60 @@
 								"v1",
 								"admin",
 								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "event get",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{addr}}/api/v1/event",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"event"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "company",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "offset",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": null,
+									"disabled": true
+								}
 							]
 						}
 					},
