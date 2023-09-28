@@ -11,21 +11,6 @@
 				{
 					"name": "admin register",
 					"request": {
-						"auth": {
-							"type": "apikey",
-							"apikey": [
-								{
-									"key": "value",
-									"value": "1c6a3b154a781f73383b14e540748c8c4d275a73b2af9c055a3568089463c4ef21d5c6f5241c24fc19d6702fb212dc9baa576fe0ed5383af554aa84e4f748ff4cff020317a2ae56085e25a4dbe2fe316014b5ea818a72ffe15fff817fa7008cb308ba80f7ed95a670d87c06022d0bb5e27480025a2c6834da1f2a125554d2626fe9e0b50ceea84f1a7845e50ffdeddec17dc7c2126760fb72d3caddd118b1c1bcc197064d6cf1a0561ccde9c5cdce6b28c24cc2c13d014f9b57dd8f54ea5da717c6220a168765c4a4ce6a19058f9c573e4d154fb8e22deecbe62818a39c9d7f9d0f85b86090a477e2a367eb2abd0a752a13c946cb62cec226ccb9b0f0e967c68",
-									"type": "string"
-								},
-								{
-									"key": "key",
-									"value": "Authorization",
-									"type": "string"
-								}
-							]
-						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -134,6 +119,95 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "event post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"event3\",\n    \"company\": \"c91da189-aaf6-41da-974e-caa35b4a0af1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{addr}}/api/v1/event",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"event"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "event delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{addr}}/api/v1/event/:id",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"event",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "39d41a42-0a49-47ce-a441-55d7a0f0555b"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "value",
+						"value": "c084876d6eee78f932da178754c860318ee733fcae1d66b1df1bd34c74d3bea962dacc19767029fbae47cc82b66df80aea305240108efae83eb38c44a8fe1e6cdd7bd0404629615fbfb29bcb061bcd164613652023f6af6add9de483d948410ef36dc760c49f66b72a4a4b6255d0a739e38563dca9ce7eb564ec3438a7bb54a4ec9fb21931316faee7932fe26925b59a20cc19b2a4b23f1158d72d75e36474d9aec6bd1c885810fe75f4e21958edc9b89457d5307a4074f9a2022fa9768a1b00a063db1835804636a5201bfb31908fa8b1b69c2f1be4d9898bdb0b876038f2d3f9dd98dc96646dfb964a01c29c4a9b557729225415af68efdf15792a848a6861",
+						"type": "string"
+					},
+					{
+						"key": "key",
+						"value": "Authorization",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		}

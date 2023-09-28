@@ -7,12 +7,12 @@ import (
 )
 
 func RequireAdminSession(c *gin.Context) {
-	id, err := GetAdminSession(c, c.GetHeader("Authorization"))
+	adminID, err := GetAdminSession(c, c.GetHeader("Authorization"))
 	if err != nil {
 		c.AbortWithError(http.StatusUnauthorized, err)
 		return
 	}
 
-	c.Set("id", id)
+	c.Set("admin-id", adminID)
 	c.Next()
 }

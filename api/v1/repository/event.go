@@ -71,3 +71,30 @@ func EventGet(ctx context.Context, in model.EventGetIn) ([]model.EventGetOut, er
 
 	return out, nil
 }
+
+func EventPost(ctx context.Context, in model.EventPostIn) error {
+	_, err := pkg.Database.Exec(
+		ctx,
+		`
+			insert into events
+			(name, company, created_by)
+			values ($1, $2, $3)
+		`,
+		in.Name, in.Company, in.AdminID,
+	)
+
+	return pkg.Error(err)
+}
+
+func EventDelete(ctx context.Context, in model.EventDeleteIn) error {
+	_, err := pkg.Database.Exec(
+		ctx,
+		`
+			delete from events
+			where id=$1
+		`,
+		in.ID,
+	)
+
+	return pkg.Error(err)
+}

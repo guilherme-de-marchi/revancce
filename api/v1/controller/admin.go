@@ -38,6 +38,12 @@ func (c Controllers) AdminRegister() {
 }
 
 func adminRegister(c *gin.Context) {
+	adminID := c.GetString("admin-id")
+	if adminID == "" {
+		c.Status(http.StatusUnauthorized)
+		return
+	}
+
 	var req model.AdminRegisterReq
 	if err := c.Bind(&req); err != nil {
 		c.JSON(http.StatusBadRequest, pkg.ErrorMsg(err.Error()))
@@ -49,17 +55,11 @@ func adminRegister(c *gin.Context) {
 		return
 	}
 
-	id := c.GetString("id")
-	if id == "" {
-		c.Status(http.StatusUnauthorized)
-		return
-	}
-
 	in := model.AdminRegisterIn{
 		Name:     *req.Name,
 		Email:    *req.Email,
 		Password: *req.Password,
-		ID:       id,
+		AdminID:  adminID,
 	}
 
 	c.JSON(service.AdminRegister(c, in))

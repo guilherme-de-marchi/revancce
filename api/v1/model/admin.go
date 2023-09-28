@@ -50,7 +50,7 @@ type AdminRegisterIn struct {
 	Name     string
 	Email    string
 	Password string
-	ID       string
+	AdminID  string
 }
 
 func (v AdminRegisterReq) Validate() error {

@@ -44,13 +44,13 @@ func AdminRegister(ctx context.Context, in model.AdminRegisterIn) (int, any) {
 	pkgErr, ok := err.(pkg.Err)
 	if !ok {
 		pkg.Log.Println(err)
-		return http.StatusInternalServerError, errors.New("something went wrong")
+		return http.StatusInternalServerError, pkg.ErrorMsg("something went wrong")
 	}
 
 	pgErr, ok := pkgErr.Err.(*pgconn.PgError)
 	if !ok {
 		pkg.Log.Println(err)
-		return http.StatusInternalServerError, errors.New("something went wrong")
+		return http.StatusInternalServerError, pkg.ErrorMsg("something went wrong")
 	}
 
 	var status int

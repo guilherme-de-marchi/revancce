@@ -20,8 +20,8 @@ func AdminLogin(ctx context.Context, in model.AdminLoginIn) (*model.AdminLoginOu
 		in.Name,
 	)
 
-	var id, passwordHash string
-	if err := row.Scan(&id, &passwordHash); err != nil {
+	var authorization, passwordHash string
+	if err := row.Scan(&authorization, &passwordHash); err != nil {
 		return nil, pkg.Error(err)
 	}
 
@@ -29,7 +29,7 @@ func AdminLogin(ctx context.Context, in model.AdminLoginIn) (*model.AdminLoginOu
 		return nil, pkg.Error(err)
 	}
 
-	token, exp, err := pkg.NewAdminSession(ctx, id)
+	token, exp, err := pkg.NewAdminSession(ctx, authorization)
 	if err != nil {
 		return nil, pkg.Error(err)
 	}
@@ -49,7 +49,7 @@ func AdminRegister(ctx context.Context, in model.AdminRegisterIn) error {
 		insert into admins (name, email, password_hash, created_by)
 		values ($1, $2, $3, $4)
 		`,
-		in.Name, in.Email, passwordHash, in.ID,
+		in.Name, in.Email, passwordHash, in.AdminID,
 	)
 
 	return pkg.Error(err)
