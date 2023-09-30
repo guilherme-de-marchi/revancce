@@ -10,7 +10,6 @@ import (
 	"github.com/guilherme-de-marchi/revancce/api/v1/repository"
 	"github.com/jackc/pgerrcode"
 	"github.com/jackc/pgx/v5"
-	"github.com/jackc/pgx/v5/pgconn"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -41,14 +40,8 @@ func AdminRegister(ctx context.Context, in model.AdminRegisterIn) (int, any) {
 		return http.StatusCreated, nil
 	}
 
-	pkgErr, ok := err.(pkg.Err)
-	if !ok {
-		pkg.Log.Println(err)
-		return http.StatusInternalServerError, pkg.ErrorMsg("something went wrong")
-	}
-
-	pgErr, ok := pkgErr.Err.(*pgconn.PgError)
-	if !ok {
+	pgErr := pkg.ErrorToPgError(err)
+	if pgErr == nil {
 		pkg.Log.Println(err)
 		return http.StatusInternalServerError, pkg.ErrorMsg("something went wrong")
 	}

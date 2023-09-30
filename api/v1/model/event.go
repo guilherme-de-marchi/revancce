@@ -51,6 +51,23 @@ type EventPostIn struct {
 }
 
 type EventDeleteIn struct {
-	ID      string
-	AdminID string
+	ID string
+}
+
+type EventUpdateReq struct {
+	Name    *string `json:"name"`
+	Company *string `json:"company"`
+}
+
+func (v EventUpdateReq) Validate() error {
+	if v.Name == nil && v.Company == nil {
+		return errors.New("must provide at least one field")
+	}
+
+	return nil
+}
+
+type EventUpdateIn struct {
+	ID string
+	EventUpdateReq
 }

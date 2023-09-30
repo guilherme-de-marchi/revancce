@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"runtime"
 	"strings"
+
+	"github.com/jackc/pgx/v5/pgconn"
 )
 
 var (
@@ -51,4 +53,18 @@ func Error(e error) error {
 
 func ErrorMsg(msg string) any {
 	return map[string]string{"error": msg}
+}
+
+func ErrorToPgError(err error) *pgconn.PgError {
+	pkgErr, ok := err.(Err)
+	if !ok {
+		return nil
+	}
+
+	pgErr, ok := pkgErr.Err.(*pgconn.PgError)
+	if !ok {
+		return nil
+	}
+
+	return pgErr
 }

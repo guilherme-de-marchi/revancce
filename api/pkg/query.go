@@ -1,24 +1,28 @@
 package pkg
 
-import "fmt"
+import (
+	"fmt"
+)
 
-func GenerateQueryConditionals(conditions map[string]*string, operator string, countStart int) (string, []any) {
-	if len(conditions) == 0 {
+func GenerateQueryParams[T any](params map[string]*T, init, sep string, countStart int) (string, []any) {
+	if len(params) == 0 {
 		return "", nil
 	}
 
 	var values []any
 	var query string
-	count := countStart + 1
-	for k, v := range conditions {
+	count := countStart
+	for k, v := range params {
 		if v == nil {
 			continue
 		}
-		if count == 1 {
-			query += "where"
+
+		if count == countStart {
+			query += init
 		} else {
-			query += operator
+			query += sep
 		}
+
 		query += fmt.Sprintf(" %s=$%v ", k, count)
 		values = append(values, *v)
 		count++
@@ -27,18 +31,19 @@ func GenerateQueryConditionals(conditions map[string]*string, operator string, c
 	return query, values
 }
 
-func GenerateQueryPagination(paginations map[string]*int, countStart int) (string, []any) {
-	if len(paginations) == 0 {
+func GenerateQueryPagination[T any](paginations map[string]*T, countStart int) (string, []any) {
+	if len(paginations) == countStart {
 		return "", nil
 	}
 
 	var values []any
 	var query string
-	count := countStart + 1
+	count := countStart
 	for k, v := range paginations {
 		if v == nil {
 			continue
 		}
+
 		query += fmt.Sprintf("%s $%v ", k, count)
 		values = append(values, *v)
 		count++

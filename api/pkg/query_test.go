@@ -3,13 +3,14 @@ package pkg
 import "testing"
 
 func TestGenerateQueryConditionals(t *testing.T) {
-	query, values := GenerateQueryConditionals(
+	query, values := GenerateQueryParams(
 		map[string]*string{
 			"abc": Pointer("def"),
 			"ghi": Pointer("jkl"),
 		},
+		"where",
 		"and",
-		0,
+		1,
 	)
 	if query != "where abc=$1 and ghi=$2 " {
 		t.Error("invalid query")
@@ -20,8 +21,27 @@ func TestGenerateQueryConditionals(t *testing.T) {
 		t.Log(query, values)
 	}
 
-	query, values = GenerateQueryConditionals(
+	query, values = GenerateQueryParams(
+		map[string]*string{
+			"abc": Pointer("def"),
+			"ghi": Pointer("jkl"),
+		},
+		"set",
+		",",
+		2,
+	)
+	if query != "set abc=$2 , ghi=$3 " {
+		t.Error("invalid query")
+		t.Log(query)
+	}
+	if len(values) != 2 {
+		t.Error("invalid values")
+		t.Log(query, values)
+	}
+
+	query, values = GenerateQueryParams[string](
 		map[string]*string{},
+		"where",
 		"and",
 		0,
 	)

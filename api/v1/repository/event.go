@@ -9,14 +9,15 @@ import (
 )
 
 func EventGet(ctx context.Context, in model.EventGetIn) ([]model.EventGetOut, error) {
-	conditionals, conditionalValues := pkg.GenerateQueryConditionals(
+	params, paramsValues := pkg.GenerateQueryParams(
 		map[string]*string{
 			"id":      in.ID,
 			"name":    in.Name,
 			"company": in.Company,
 		},
+		"where",
 		"and",
-		0,
+		1,
 	)
 
 	if in.Limit != nil {
@@ -34,23 +35,25 @@ func EventGet(ctx context.Context, in model.EventGetIn) ([]model.EventGetOut, er
 			"offset": pkg.CalcOptionalOffset(in.Offset, in.Page, in.Limit),
 			"limit":  in.Limit,
 		},
-		len(conditionalValues),
+		len(paramsValues)+1,
 	)
 
 	rows, err := pkg.Database.Query(
 		ctx,
-		fmt.Sprintf(`
-			select
-				id,
-				name,
-				company
-			from events
-			%s %s
+		fmt.Sprintf(
+			`
+				select
+					id,
+					name,
+					company
+				from events
+				%s 
+				%s
 			`,
-			conditionals,
+			params,
 			paginations,
 		),
-		append(conditionalValues, paginationValues...)...,
+		append(paramsValues, paginationValues...)...,
 	)
 	if err != nil {
 		return nil, pkg.Error(err)
@@ -94,6 +97,33 @@ func EventDelete(ctx context.Context, in model.EventDeleteIn) error {
 			where id=$1
 		`,
 		in.ID,
+	)
+
+	return pkg.Error(err)
+}
+
+func EventUpdate(ctx context.Context, in model.EventUpdateIn) error {
+	params, paramsValues := pkg.GenerateQueryParams(
+		map[string]*string{
+			"name":    in.Name,
+			"company": in.Company,
+		},
+		"",
+		",",
+		2,
+	)
+
+	_, err := pkg.Database.Exec(
+		ctx,
+		fmt.Sprintf(
+			`
+			update events
+			set %s
+			where id=$1
+			`,
+			params,
+		),
+		append([]any{in.ID}, paramsValues...)...,
 	)
 
 	return pkg.Error(err)

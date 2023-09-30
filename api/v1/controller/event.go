@@ -57,17 +57,34 @@ func (c Controllers) EventDelete() {
 }
 
 func eventDelete(c *gin.Context) {
-	adminID := c.GetString("admin-id")
-	if adminID == "" {
-		c.Status(http.StatusUnauthorized)
-		return
-	}
-
 	id := c.Param("id")
 	if id == "" {
 		c.JSON(http.StatusBadRequest, pkg.ErrorMsg("param 'id' is empty"))
 		return
 	}
 
-	c.JSON(service.EventDelete(c, model.EventDeleteIn{ID: id, AdminID: adminID}))
+	c.JSON(service.EventDelete(c, model.EventDeleteIn{ID: id}))
+}
+
+func (c Controllers) EventUpdate() {
+	c.Group.PUT("/event/:id", pkg.RequireAdminSession, eventUpdate)
+}
+
+func eventUpdate(c *gin.Context) {
+	id := c.Param("id")
+	if id == "" {
+		c.JSON(http.StatusBadRequest, pkg.ErrorMsg("param 'id' is empty"))
+		return
+	}
+
+	var req model.EventUpdateReq
+	if err := c.Bind(&req); err != nil {
+		c.JSON(http.StatusBadRequest, pkg.ErrorMsg(err.Error()))
+		return
+	}
+
+	c.JSON(service.EventUpdate(c, model.EventUpdateIn{
+		ID:             id,
+		EventUpdateReq: req,
+	}))
 }

@@ -11,8 +11,8 @@ import (
 	"github.com/jackc/pgerrcode"
 )
 
-func EventGet(ctx context.Context, in model.EventGetIn) (int, any) {
-	resp, err := repository.EventGet(ctx, in)
+func EventLocationGet(ctx context.Context, in model.EventLocationGetIn) (int, any) {
+	resp, err := repository.EventLocationGet(ctx, in)
 	if err == nil {
 		if len(resp) == 0 {
 			return http.StatusNoContent, nil
@@ -25,8 +25,8 @@ func EventGet(ctx context.Context, in model.EventGetIn) (int, any) {
 	return http.StatusInternalServerError, pkg.ErrorMsg(err.Error())
 }
 
-func EventPost(ctx context.Context, in model.EventPostIn) (int, any) {
-	err := repository.EventPost(ctx, in)
+func EventLocationPost(ctx context.Context, in model.EventLocationPostIn) (int, any) {
+	err := repository.EventLocationPost(ctx, in)
 	if err == nil {
 		return http.StatusCreated, nil
 	}
@@ -39,8 +39,9 @@ func EventPost(ctx context.Context, in model.EventPostIn) (int, any) {
 
 	var status int
 	switch pgErr.Code {
-	case pgerrcode.UniqueViolation:
-		err = errors.New("name in use")
+	case pgerrcode.UniqueViolation,
+		pgerrcode.ForeignKeyViolation:
+		err = errors.New("invalid value")
 		status = http.StatusUnauthorized
 	default:
 		pkg.Log.Println(err)
@@ -51,8 +52,8 @@ func EventPost(ctx context.Context, in model.EventPostIn) (int, any) {
 	return status, pkg.ErrorMsg(err.Error())
 }
 
-func EventDelete(ctx context.Context, in model.EventDeleteIn) (int, any) {
-	err := repository.EventDelete(ctx, in)
+func EventLocationDelete(ctx context.Context, in model.EventLocationDeleteIn) (int, any) {
+	err := repository.EventLocationDelete(ctx, in)
 	if err == nil {
 		return http.StatusOK, nil
 	}
@@ -77,8 +78,8 @@ func EventDelete(ctx context.Context, in model.EventDeleteIn) (int, any) {
 	return status, pkg.ErrorMsg(err.Error())
 }
 
-func EventUpdate(ctx context.Context, in model.EventUpdateIn) (int, any) {
-	err := repository.EventUpdate(ctx, in)
+func EventLocationUpdate(ctx context.Context, in model.EventLocationUpdateIn) (int, any) {
+	err := repository.EventLocationUpdate(ctx, in)
 	if err == nil {
 		return http.StatusOK, nil
 	}

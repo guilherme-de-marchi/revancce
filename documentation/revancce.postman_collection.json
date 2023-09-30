@@ -67,7 +67,7 @@
 					"response": []
 				},
 				{
-					"name": "event get",
+					"name": "event",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -92,7 +92,7 @@
 								},
 								{
 									"key": "name",
-									"value": null,
+									"value": "",
 									"disabled": true
 								},
 								{
@@ -121,7 +121,7 @@
 					"response": []
 				},
 				{
-					"name": "event post",
+					"name": "event",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -149,7 +149,7 @@
 					"response": []
 				},
 				{
-					"name": "event delete",
+					"name": "event",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -173,6 +173,196 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "event",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"event3\",\n    \"company\": \"c91da189-aaf6-41da-974e-caa35b4a0af1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{addr}}/api/v1/event/ee7bc78d-0432-4247-8289-5f723a54ec60",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"event",
+								"ee7bc78d-0432-4247-8289-5f723a54ec60"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "event location",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{addr}}/api/v1/event/location",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"event",
+								"location"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "event",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "country",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "state",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "city",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "street",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "number",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "offset",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "event location",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"event\": \"ee7bc78d-0432-4247-8289-5f723a54ec60\",\n    \"country\": \"brasil\",\n    \"state\": \"são paulo\",\n    \"city\": \"santo andré\",\n    \"street\": \"visconde de mauá\",\n    \"number\": \"72\",\n    \"additional_info\": \"\",\n    \"maps_url\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{addr}}/api/v1/event/location",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"event",
+								"location"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "event location",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{addr}}/api/v1/event/location/:id",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"event",
+								"location",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "39a4d95e-e28d-4b49-a39a-125d368c4bd6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "event location",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"event\": \"ee7bc78d-0432-4247-8289-5f723a54ec60\",\n    \"country\": \"brasil\",\n    \"state\": \"minas\",\n    \"city\": \"santo andré\",\n    \"street\": \"visconde de mauá\",\n    \"number\": \"72\",\n    \"additional_info\": \"\",\n    \"maps_url\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{addr}}/api/v1/event/location/7c9a888b-d673-42dc-8162-c40a1564b32f",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"event",
+								"location",
+								"7c9a888b-d673-42dc-8162-c40a1564b32f"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"auth": {
@@ -180,7 +370,7 @@
 				"apikey": [
 					{
 						"key": "value",
-						"value": "c084876d6eee78f932da178754c860318ee733fcae1d66b1df1bd34c74d3bea962dacc19767029fbae47cc82b66df80aea305240108efae83eb38c44a8fe1e6cdd7bd0404629615fbfb29bcb061bcd164613652023f6af6add9de483d948410ef36dc760c49f66b72a4a4b6255d0a739e38563dca9ce7eb564ec3438a7bb54a4ec9fb21931316faee7932fe26925b59a20cc19b2a4b23f1158d72d75e36474d9aec6bd1c885810fe75f4e21958edc9b89457d5307a4074f9a2022fa9768a1b00a063db1835804636a5201bfb31908fa8b1b69c2f1be4d9898bdb0b876038f2d3f9dd98dc96646dfb964a01c29c4a9b557729225415af68efdf15792a848a6861",
+						"value": "641b07fed9e5f2b3d27ac0fe5720d180ccca35117e46b34f411891793b6cafde7cd7c4b6430ec3ee6949416fa4470bfda163e51bb8d3d9fe8ece2265de9307d513642f8b033761ca4afd6a226e8f240dec6c90d66ea0624db96d7d19ce2c98d36081013fbb56f62b9908b6aca42b80bec1acbb8bfa6cd934ebdf79ffa6aa8367426494c3a71c8a5dd1928203553a7141dffbd85c1921bdb8896138b6d1268677b68e8b2a4b690455aaaf7fb0228cf6e56310a4216ee48f06785752d1e48bf60c0dbc50306737aea5d5717d1f147dffa8a310749c4593a89399c89d65dcafd47b030381af8db1788848f25f652887970e7001a5aa3a0cf07e057b9de2d374dad2",
 						"type": "string"
 					},
 					{
