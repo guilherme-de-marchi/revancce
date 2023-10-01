@@ -14,13 +14,28 @@ func (c Controllers) EventGet() {
 }
 
 func eventGet(c *gin.Context) {
-	var req model.EventGetReq
+	req := model.EventGetReq{
+		ID:      pkg.NewVarchar(40, false),
+		Name:    pkg.NewVarchar(20, false),
+		Company: pkg.NewVarchar(40, false),
+		Offset:  pkg.NewInteger(false),
+		Page:    pkg.NewInteger(false),
+		Limit:   pkg.NewInteger(false),
+	}
+
 	if err := c.Bind(&req); err != nil {
 		c.JSON(http.StatusBadRequest, pkg.ErrorMsg(err.Error()))
 		return
 	}
 
-	c.JSON(service.EventGet(c, model.EventGetIn(req)))
+	c.JSON(service.EventGet(c, model.EventGetIn{
+		ID:      req.ID.Value,
+		Name:    req.Name.Value,
+		Company: req.Company.Value,
+		Offset:  req.Offset.Value,
+		Page:    req.Page.Value,
+		Limit:   req.Limit.Value,
+	}))
 }
 
 func (c Controllers) EventPost() {
@@ -34,7 +49,11 @@ func eventPost(c *gin.Context) {
 		return
 	}
 
-	var req model.EventPostReq
+	req := model.EventPostReq{
+		Name:    pkg.NewVarchar(20, false),
+		Company: pkg.NewVarchar(40, false),
+	}
+
 	if err := c.Bind(&req); err != nil {
 		c.JSON(http.StatusBadRequest, pkg.ErrorMsg(err.Error()))
 		return
@@ -46,8 +65,8 @@ func eventPost(c *gin.Context) {
 	}
 
 	c.JSON(service.EventPost(c, model.EventPostIn{
-		Name:    *req.Name,
-		Company: *req.Company,
+		Name:    *req.Name.Value,
+		Company: *req.Company.Value,
 		AdminID: adminID,
 	}))
 }
@@ -77,14 +96,19 @@ func eventUpdate(c *gin.Context) {
 		return
 	}
 
-	var req model.EventUpdateReq
+	req := model.EventUpdateReq{
+		Name:    pkg.NewVarchar(20, false),
+		Company: pkg.NewVarchar(40, false),
+	}
+
 	if err := c.Bind(&req); err != nil {
 		c.JSON(http.StatusBadRequest, pkg.ErrorMsg(err.Error()))
 		return
 	}
 
 	c.JSON(service.EventUpdate(c, model.EventUpdateIn{
-		ID:             id,
-		EventUpdateReq: req,
+		ID:      id,
+		Name:    req.Name.Value,
+		Company: req.Company.Value,
 	}))
 }

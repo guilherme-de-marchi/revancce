@@ -1,17 +1,24 @@
 package model
 
-import "errors"
+import "github.com/guilherme-de-marchi/revancce/api/pkg"
 
 type EventGetReq struct {
-	ID      *string `form:"id"`
-	Name    *string `form:"name"`
-	Company *string `form:"company"`
-	Offset  *int    `form:"offset"`
-	Page    *int    `form:"page"`
-	Limit   *int    `form:"limit"`
+	ID      pkg.Varchar `form:"id"`
+	Name    pkg.Varchar `form:"name"`
+	Company pkg.Varchar `form:"company"`
+	Offset  pkg.Integer `form:"offset"`
+	Page    pkg.Integer `form:"page"`
+	Limit   pkg.Integer `form:"limit"`
 }
 
-type EventGetIn EventGetReq
+type EventGetIn struct {
+	ID      *string
+	Name    *string
+	Company *string
+	Offset  *int
+	Page    *int
+	Limit   *int
+}
 
 type EventGetOut struct {
 	ID      string `json:"id"`
@@ -20,28 +27,12 @@ type EventGetOut struct {
 }
 
 type EventPostReq struct {
-	Name    *string `json:"name"`
-	Company *string `json:"company"`
+	Name    pkg.Varchar `json:"name"`
+	Company pkg.Varchar `json:"company"`
 }
 
 func (v EventPostReq) Validate() error {
-	if v.Name == nil {
-		return errors.New("field 'name' is empty")
-	}
-
-	if v.Company == nil {
-		return errors.New("field 'company' is empty")
-	}
-
-	if len(*v.Name) > 20 {
-		return errors.New("field 'name' too large")
-	}
-
-	if len(*v.Company) > 40 {
-		return errors.New("field 'company' too large")
-	}
-
-	return nil
+	return pkg.ValidateStruct(v)
 }
 
 type EventPostIn struct {
@@ -55,19 +46,16 @@ type EventDeleteIn struct {
 }
 
 type EventUpdateReq struct {
-	Name    *string `json:"name"`
-	Company *string `json:"company"`
+	Name    pkg.Varchar `json:"name"`
+	Company pkg.Varchar `json:"company"`
 }
 
 func (v EventUpdateReq) Validate() error {
-	if v.Name == nil && v.Company == nil {
-		return errors.New("must provide at least one field")
-	}
-
-	return nil
+	return pkg.ValidateStruct(v)
 }
 
 type EventUpdateIn struct {
-	ID string
-	EventUpdateReq
+	ID      string
+	Name    *string
+	Company *string
 }

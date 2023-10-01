@@ -40,9 +40,10 @@ func EventLocationPost(ctx context.Context, in model.EventLocationPostIn) (int, 
 	var status int
 	switch pgErr.Code {
 	case pgerrcode.UniqueViolation,
-		pgerrcode.ForeignKeyViolation:
+		pgerrcode.ForeignKeyViolation,
+		pgerrcode.InvalidTextRepresentation:
 		err = errors.New("invalid value")
-		status = http.StatusUnauthorized
+		status = http.StatusBadRequest
 	default:
 		pkg.Log.Println(err)
 		err = errors.New("something went wrong")
@@ -68,7 +69,7 @@ func EventLocationDelete(ctx context.Context, in model.EventLocationDeleteIn) (i
 	switch pgErr.Code {
 	case pgerrcode.InvalidTextRepresentation:
 		err = errors.New("invalid field")
-		status = http.StatusUnauthorized
+		status = http.StatusBadRequest
 	default:
 		pkg.Log.Println(err)
 		err = errors.New("something went wrong")
@@ -95,7 +96,7 @@ func EventLocationUpdate(ctx context.Context, in model.EventLocationUpdateIn) (i
 	case pgerrcode.ForeignKeyViolation,
 		pgerrcode.InvalidTextRepresentation:
 		err = errors.New("invalid field")
-		status = http.StatusUnauthorized
+		status = http.StatusBadRequest
 	default:
 		pkg.Log.Println(err)
 		err = errors.New("something went wrong")

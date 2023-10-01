@@ -41,7 +41,7 @@ func EventPost(ctx context.Context, in model.EventPostIn) (int, any) {
 	switch pgErr.Code {
 	case pgerrcode.UniqueViolation:
 		err = errors.New("name in use")
-		status = http.StatusUnauthorized
+		status = http.StatusBadRequest
 	default:
 		pkg.Log.Println(err)
 		err = errors.New("something went wrong")
@@ -67,7 +67,7 @@ func EventDelete(ctx context.Context, in model.EventDeleteIn) (int, any) {
 	switch pgErr.Code {
 	case pgerrcode.InvalidTextRepresentation:
 		err = errors.New("invalid field")
-		status = http.StatusUnauthorized
+		status = http.StatusBadRequest
 	default:
 		pkg.Log.Println(err)
 		err = errors.New("something went wrong")
@@ -94,7 +94,7 @@ func EventUpdate(ctx context.Context, in model.EventUpdateIn) (int, any) {
 	case pgerrcode.ForeignKeyViolation,
 		pgerrcode.InvalidTextRepresentation:
 		err = errors.New("invalid field")
-		status = http.StatusUnauthorized
+		status = http.StatusBadRequest
 	default:
 		pkg.Log.Println(err)
 		err = errors.New("something went wrong")

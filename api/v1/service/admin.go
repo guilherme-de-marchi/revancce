@@ -24,7 +24,7 @@ func AdminLogin(ctx context.Context, in model.AdminLoginIn) (int, any) {
 	case errors.Is(err, bcrypt.ErrMismatchedHashAndPassword),
 		errors.Is(err, pgx.ErrNoRows):
 		err = errors.New("invalid credentials")
-		status = http.StatusUnauthorized
+		status = http.StatusBadRequest
 	default:
 		pkg.Log.Println(err)
 		err = errors.New("something went wrong")
@@ -50,7 +50,7 @@ func AdminRegister(ctx context.Context, in model.AdminRegisterIn) (int, any) {
 	switch pgErr.Code {
 	case pgerrcode.UniqueViolation:
 		err = errors.New("name in use")
-		status = http.StatusUnauthorized
+		status = http.StatusBadRequest
 	default:
 		pkg.Log.Println(err)
 		err = errors.New("something went wrong")

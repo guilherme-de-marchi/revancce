@@ -14,7 +14,11 @@ func (c Controllers) AdminLogin() {
 }
 
 func adminLogin(c *gin.Context) {
-	var req model.AdminLoginReq
+	req := model.AdminLoginReq{
+		Name:     pkg.NewVarchar(20, true),
+		Password: pkg.NewVarchar(20, true),
+	}
+
 	if err := c.Bind(&req); err != nil {
 		c.JSON(http.StatusBadRequest, pkg.ErrorMsg(err.Error()))
 		return
@@ -26,8 +30,8 @@ func adminLogin(c *gin.Context) {
 	}
 
 	in := model.AdminLoginIn{
-		Name:     *req.Name,
-		Password: *req.Password,
+		Name:     *req.Name.Value,
+		Password: *req.Password.Value,
 	}
 
 	c.JSON(service.AdminLogin(c, in))
@@ -44,7 +48,12 @@ func adminRegister(c *gin.Context) {
 		return
 	}
 
-	var req model.AdminRegisterReq
+	req := model.AdminRegisterReq{
+		Name:     pkg.NewVarchar(20, true),
+		Email:    pkg.NewVarchar(20, true),
+		Password: pkg.NewVarchar(20, true),
+	}
+
 	if err := c.Bind(&req); err != nil {
 		c.JSON(http.StatusBadRequest, pkg.ErrorMsg(err.Error()))
 		return
@@ -56,9 +65,9 @@ func adminRegister(c *gin.Context) {
 	}
 
 	in := model.AdminRegisterIn{
-		Name:     *req.Name,
-		Email:    *req.Email,
-		Password: *req.Password,
+		Name:     *req.Name.Value,
+		Email:    *req.Email.Value,
+		Password: *req.Password.Value,
 		AdminID:  adminID,
 	}
 

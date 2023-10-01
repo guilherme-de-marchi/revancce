@@ -13,8 +13,8 @@ func TestAdminLogin_Success(t *testing.T) {
 		http.MethodPost,
 		"/api/v1/admin/login",
 		model.AdminLoginReq{
-			Name:     pkg.Pointer("test2"),
-			Password: pkg.Pointer("test2"),
+			Name:     pkg.Varchar{Value: pkg.Pointer("test2")},
+			Password: pkg.Varchar{Value: pkg.Pointer("test2")},
 		},
 	)
 	if err != nil {
@@ -34,9 +34,9 @@ func TestAdminRegister_Success(t *testing.T) {
 		http.MethodPost,
 		"/api/v1/admin/register",
 		model.AdminRegisterReq{
-			Name:     pkg.Pointer("test2"),
-			Email:    pkg.Pointer("test2@gmail.com"),
-			Password: pkg.Pointer("test2"),
+			Name:     pkg.Varchar{Value: pkg.Pointer("test2")},
+			Email:    pkg.Varchar{Value: pkg.Pointer("test2@gmail.com")},
+			Password: pkg.Varchar{Value: pkg.Pointer("test2")},
 		},
 	)
 	if err != nil {

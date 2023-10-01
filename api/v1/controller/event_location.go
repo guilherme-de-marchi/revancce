@@ -14,13 +14,36 @@ func (c Controllers) EventLocationGet() {
 }
 
 func eventLocationGet(c *gin.Context) {
-	var req model.EventLocationGetReq
+	req := model.EventLocationGetReq{
+		ID:      pkg.NewVarchar(40, false),
+		Event:   pkg.NewVarchar(40, false),
+		Country: pkg.NewVarchar(20, false),
+		State:   pkg.NewVarchar(20, false),
+		City:    pkg.NewVarchar(20, false),
+		Street:  pkg.NewVarchar(20, false),
+		Number:  pkg.NewVarchar(20, false),
+		Offset:  pkg.NewInteger(false),
+		Page:    pkg.NewInteger(false),
+		Limit:   pkg.NewInteger(false),
+	}
+
 	if err := c.Bind(&req); err != nil {
 		c.JSON(http.StatusBadRequest, pkg.ErrorMsg(err.Error()))
 		return
 	}
 
-	c.JSON(service.EventLocationGet(c, model.EventLocationGetIn(req)))
+	c.JSON(service.EventLocationGet(c, model.EventLocationGetIn{
+		ID:      req.ID.Value,
+		Event:   req.Event.Value,
+		Country: req.Country.Value,
+		State:   req.State.Value,
+		City:    req.City.Value,
+		Street:  req.Street.Value,
+		Number:  req.Number.Value,
+		Offset:  req.Offset.Value,
+		Page:    req.Page.Value,
+		Limit:   req.Limit.Value,
+	}))
 }
 
 func (c Controllers) EventLocationPost() {
@@ -34,7 +57,17 @@ func eventLocationPost(c *gin.Context) {
 		return
 	}
 
-	var req model.EventLocationPostReq
+	req := model.EventLocationPostReq{
+		Event:          pkg.NewVarchar(40, true),
+		Country:        pkg.NewVarchar(20, true),
+		State:          pkg.NewVarchar(20, true),
+		City:           pkg.NewVarchar(20, true),
+		Street:         pkg.NewVarchar(20, true),
+		Number:         pkg.NewVarchar(20, true),
+		AdditionalInfo: pkg.NewVarchar(100, true),
+		MapsURL:        pkg.NewVarchar(100, true),
+	}
+
 	if err := c.Bind(&req); err != nil {
 		c.JSON(http.StatusBadRequest, pkg.ErrorMsg(err.Error()))
 		return
@@ -46,14 +79,14 @@ func eventLocationPost(c *gin.Context) {
 	}
 
 	c.JSON(service.EventLocationPost(c, model.EventLocationPostIn{
-		Event:          *req.Event,
-		Country:        *req.Country,
-		State:          *req.State,
-		City:           *req.City,
-		Street:         *req.Street,
-		Number:         *req.Number,
-		AdditionalInfo: *req.AdditionalInfo,
-		MapsURL:        *req.MapsURL,
+		Event:          *req.Event.Value,
+		Country:        *req.Country.Value,
+		State:          *req.State.Value,
+		City:           *req.City.Value,
+		Street:         *req.Street.Value,
+		Number:         *req.Number.Value,
+		AdditionalInfo: *req.AdditionalInfo.Value,
+		MapsURL:        *req.MapsURL.Value,
 		AdminID:        adminID,
 	}))
 }
@@ -83,14 +116,31 @@ func eventLocationUpdate(c *gin.Context) {
 		return
 	}
 
-	var req model.EventLocationUpdateReq
+	req := model.EventLocationUpdateReq{
+		Event:          pkg.NewVarchar(40, true),
+		Country:        pkg.NewVarchar(20, true),
+		State:          pkg.NewVarchar(20, true),
+		City:           pkg.NewVarchar(20, true),
+		Street:         pkg.NewVarchar(20, true),
+		Number:         pkg.NewVarchar(20, true),
+		AdditionalInfo: pkg.NewVarchar(100, true),
+		MapsURL:        pkg.NewVarchar(100, true),
+	}
+
 	if err := c.Bind(&req); err != nil {
 		c.JSON(http.StatusBadRequest, pkg.ErrorMsg(err.Error()))
 		return
 	}
 
 	c.JSON(service.EventLocationUpdate(c, model.EventLocationUpdateIn{
-		ID:                     id,
-		EventLocationUpdateReq: req,
+		ID:             id,
+		Event:          req.Event.Value,
+		Country:        req.Country.Value,
+		State:          req.State.Value,
+		City:           req.City.Value,
+		Street:         req.Street.Value,
+		Number:         req.Number.Value,
+		AdditionalInfo: req.AdditionalInfo.Value,
+		MapsURL:        req.MapsURL.Value,
 	}))
 }
