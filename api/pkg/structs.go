@@ -13,8 +13,10 @@ var (
 	validatorErrRequired         = errors.New("field is required")
 )
 
-type Validator interface {
+type OptionalValue interface {
 	Validate() error
+	GetValue() any
+	IsNil() bool
 }
 
 func ValidateStruct(s any) error {
@@ -33,7 +35,7 @@ func ValidateStruct(s any) error {
 			return fmt.Errorf("field '%s' is empty", name)
 		}
 
-		validator, ok := f.Interface().(Validator)
+		validator, ok := f.Interface().(OptionalValue)
 		if !ok {
 			continue
 		}

@@ -23,19 +23,18 @@ func eventGet(c *gin.Context) {
 		Limit:   pkg.NewInteger(false),
 	}
 
-	if err := c.Bind(&req); err != nil {
+	m := make(map[string]string)
+	if err := c.ShouldBind(&m); err != nil {
 		c.JSON(http.StatusBadRequest, pkg.ErrorMsg(err.Error()))
 		return
 	}
 
-	c.JSON(service.EventGet(c, model.EventGetIn{
-		ID:      req.ID.Value,
-		Name:    req.Name.Value,
-		Company: req.Company.Value,
-		Offset:  req.Offset.Value,
-		Page:    req.Page.Value,
-		Limit:   req.Limit.Value,
-	}))
+	if err := pkg.BindQuery(m, &req); err != nil {
+		c.JSON(http.StatusInternalServerError, pkg.ErrorMsg("unable to bind query"))
+		return
+	}
+
+	c.JSON(service.EventGet(c, model.EventGetIn(req)))
 }
 
 func (c Controllers) EventPost() {
@@ -50,11 +49,11 @@ func eventPost(c *gin.Context) {
 	}
 
 	req := model.EventPostReq{
-		Name:    pkg.NewVarchar(20, false),
-		Company: pkg.NewVarchar(40, false),
+		Name:    pkg.NewVarchar(20, true),
+		Company: pkg.NewVarchar(40, true),
 	}
 
-	if err := c.Bind(&req); err != nil {
+	if err := c.ShouldBind(&req); err != nil {
 		c.JSON(http.StatusBadRequest, pkg.ErrorMsg(err.Error()))
 		return
 	}
@@ -101,14 +100,13 @@ func eventUpdate(c *gin.Context) {
 		Company: pkg.NewVarchar(40, false),
 	}
 
-	if err := c.Bind(&req); err != nil {
+	if err := c.ShouldBind(&req); err != nil {
 		c.JSON(http.StatusBadRequest, pkg.ErrorMsg(err.Error()))
 		return
 	}
 
 	c.JSON(service.EventUpdate(c, model.EventUpdateIn{
-		ID:      id,
-		Name:    req.Name.Value,
-		Company: req.Company.Value,
+		ID:             id,
+		EventUpdateReq: req,
 	}))
 }

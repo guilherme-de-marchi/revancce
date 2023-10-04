@@ -17,18 +17,7 @@ type EventLocationGetReq struct {
 	Limit   pkg.Integer `form:"limit"`
 }
 
-type EventLocationGetIn struct {
-	ID      *string
-	Event   *string
-	Country *string
-	State   *string
-	City    *string
-	Street  *string
-	Number  *string
-	Offset  *int
-	Page    *int
-	Limit   *int
-}
+type EventLocationGetIn EventLocationGetReq
 
 type EventLocationGetOut struct {
 	ID             string `json:"id"`
@@ -89,13 +78,6 @@ func (v EventLocationUpdateReq) Validate() error {
 }
 
 type EventLocationUpdateIn struct {
-	ID             string
-	Event          *string
-	Country        *string
-	State          *string
-	City           *string
-	Street         *string
-	Number         *string
-	AdditionalInfo *string
-	MapsURL        *string
+	ID string
+	EventLocationUpdateReq
 }

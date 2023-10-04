@@ -11,14 +11,7 @@ type EventGetReq struct {
 	Limit   pkg.Integer `form:"limit"`
 }
 
-type EventGetIn struct {
-	ID      *string
-	Name    *string
-	Company *string
-	Offset  *int
-	Page    *int
-	Limit   *int
-}
+type EventGetIn EventGetReq
 
 type EventGetOut struct {
 	ID      string `json:"id"`
@@ -55,7 +48,6 @@ func (v EventUpdateReq) Validate() error {
 }
 
 type EventUpdateIn struct {
-	ID      string
-	Name    *string
-	Company *string
+	ID string
+	EventUpdateReq
 }

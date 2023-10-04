@@ -27,23 +27,18 @@ func eventLocationGet(c *gin.Context) {
 		Limit:   pkg.NewInteger(false),
 	}
 
-	if err := c.Bind(&req); err != nil {
+	m := make(map[string]string)
+	if err := c.ShouldBind(&m); err != nil {
 		c.JSON(http.StatusBadRequest, pkg.ErrorMsg(err.Error()))
 		return
 	}
 
-	c.JSON(service.EventLocationGet(c, model.EventLocationGetIn{
-		ID:      req.ID.Value,
-		Event:   req.Event.Value,
-		Country: req.Country.Value,
-		State:   req.State.Value,
-		City:    req.City.Value,
-		Street:  req.Street.Value,
-		Number:  req.Number.Value,
-		Offset:  req.Offset.Value,
-		Page:    req.Page.Value,
-		Limit:   req.Limit.Value,
-	}))
+	if err := pkg.BindQuery(m, &req); err != nil {
+		c.JSON(http.StatusInternalServerError, pkg.ErrorMsg("unable to bind query"))
+		return
+	}
+
+	c.JSON(service.EventLocationGet(c, model.EventLocationGetIn(req)))
 }
 
 func (c Controllers) EventLocationPost() {
@@ -68,7 +63,7 @@ func eventLocationPost(c *gin.Context) {
 		MapsURL:        pkg.NewVarchar(100, true),
 	}
 
-	if err := c.Bind(&req); err != nil {
+	if err := c.ShouldBind(&req); err != nil {
 		c.JSON(http.StatusBadRequest, pkg.ErrorMsg(err.Error()))
 		return
 	}
@@ -127,20 +122,13 @@ func eventLocationUpdate(c *gin.Context) {
 		MapsURL:        pkg.NewVarchar(100, true),
 	}
 
-	if err := c.Bind(&req); err != nil {
+	if err := c.ShouldBind(&req); err != nil {
 		c.JSON(http.StatusBadRequest, pkg.ErrorMsg(err.Error()))
 		return
 	}
 
 	c.JSON(service.EventLocationUpdate(c, model.EventLocationUpdateIn{
-		ID:             id,
-		Event:          req.Event.Value,
-		Country:        req.Country.Value,
-		State:          req.State.Value,
-		City:           req.City.Value,
-		Street:         req.Street.Value,
-		Number:         req.Number.Value,
-		AdditionalInfo: req.AdditionalInfo.Value,
-		MapsURL:        req.MapsURL.Value,
+		ID:                     id,
+		EventLocationUpdateReq: req,
 	}))
 }

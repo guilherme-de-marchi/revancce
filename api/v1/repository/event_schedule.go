@@ -8,12 +8,13 @@ import (
 	"github.com/guilherme-de-marchi/revancce/api/v1/model"
 )
 
-func EventGet(ctx context.Context, in model.EventGetIn) ([]model.EventGetOut, error) {
+func EventScheduleGet(ctx context.Context, in model.EventScheduleGetIn) ([]model.EventScheduleGetOut, error) {
 	params, paramsValues := pkg.GenerateQueryParams(
 		[]pkg.QueryParam{
 			pkg.NewQueryParam("id", in.ID, "="),
-			pkg.NewQueryParam("name", in.Name, "="),
-			pkg.NewQueryParam("company", in.Company, "="),
+			pkg.NewQueryParam("event", in.Event, "="),
+			pkg.NewQueryParam("starts_at", in.From, ">="),
+			pkg.NewQueryParam("ends_at", in.To, "<="),
 		},
 		"where",
 		"and",
@@ -44,9 +45,10 @@ func EventGet(ctx context.Context, in model.EventGetIn) ([]model.EventGetOut, er
 			`
 				select
 					id,
-					name,
-					company
-				from events
+					event, 
+					starts_at, 
+					ends_at
+				from events_schedules
 				%s 
 				%s
 			`,
@@ -63,37 +65,46 @@ func EventGet(ctx context.Context, in model.EventGetIn) ([]model.EventGetOut, er
 		return nil, pkg.Error(err)
 	}
 
-	var out []model.EventGetOut
+	var out []model.EventScheduleGetOut
 	for rows.Next() {
-		var event model.EventGetOut
-		if err := rows.Scan(&event.ID, &event.Name, &event.Company); err != nil {
+		var schedule model.EventScheduleGetOut
+		err := rows.Scan(
+			&schedule.ID,
+			&schedule.Event,
+			&schedule.StartsAt,
+			&schedule.EndsAt,
+		)
+		if err != nil {
 			return nil, pkg.Error(err)
 		}
-		out = append(out, event)
+		out = append(out, schedule)
 	}
 
 	return out, nil
 }
 
-func EventPost(ctx context.Context, in model.EventPostIn) error {
+func EventSchedulePost(ctx context.Context, in model.EventSchedulePostIn) error {
 	_, err := pkg.Database.Exec(
 		ctx,
 		`
-			insert into events
-			(name, company, created_by)
-			values ($1, $2, $3)
+			insert into events_schedules
+			(event, starts_at, ends_at, created_by)
+			values ($1, $2, $3, $4)
 		`,
-		in.Name, in.Company, in.AdminID,
+		in.Event,
+		in.StartsAt,
+		in.EndsAt,
+		in.AdminID,
 	)
 
 	return pkg.Error(err)
 }
 
-func EventDelete(ctx context.Context, in model.EventDeleteIn) error {
+func EventScheduleDelete(ctx context.Context, in model.EventScheduleDeleteIn) error {
 	_, err := pkg.Database.Exec(
 		ctx,
 		`
-			delete from events
+			delete from events_schedules
 			where id=$1
 		`,
 		in.ID,
@@ -102,11 +113,12 @@ func EventDelete(ctx context.Context, in model.EventDeleteIn) error {
 	return pkg.Error(err)
 }
 
-func EventUpdate(ctx context.Context, in model.EventUpdateIn) error {
+func EventScheduleUpdate(ctx context.Context, in model.EventScheduleUpdateIn) error {
 	params, paramsValues := pkg.GenerateQueryParams(
 		[]pkg.QueryParam{
-			pkg.NewQueryParam("name", in.Name, "="),
-			pkg.NewQueryParam("company", in.Company, "="),
+			pkg.NewQueryParam("event", in.Event, ""),
+			pkg.NewQueryParam("starts_at", in.StartsAt, ""),
+			pkg.NewQueryParam("ends_at", in.EndsAt, ""),
 		},
 		"",
 		",",
@@ -117,7 +129,7 @@ func EventUpdate(ctx context.Context, in model.EventUpdateIn) error {
 		ctx,
 		fmt.Sprintf(
 			`
-			update events
+			update events_schedules
 			set %s
 			where id=$1
 			`,

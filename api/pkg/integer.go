@@ -25,6 +25,14 @@ func (v Integer) Validate() error {
 	return v.validate(v.Value)
 }
 
+func (v Integer) GetValue() any {
+	return v.validate(v.Value)
+}
+
+func (v Integer) IsNil() bool {
+	return v.Value == nil
+}
+
 func NewInteger(require bool) Integer {
 	return Integer{validate: func(v *int) error {
 		if v == nil && require {

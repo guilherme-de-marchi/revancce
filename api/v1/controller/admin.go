@@ -19,7 +19,7 @@ func adminLogin(c *gin.Context) {
 		Password: pkg.NewVarchar(20, true),
 	}
 
-	if err := c.Bind(&req); err != nil {
+	if err := c.ShouldBind(&req); err != nil {
 		c.JSON(http.StatusBadRequest, pkg.ErrorMsg(err.Error()))
 		return
 	}
@@ -54,7 +54,7 @@ func adminRegister(c *gin.Context) {
 		Password: pkg.NewVarchar(20, true),
 	}
 
-	if err := c.Bind(&req); err != nil {
+	if err := c.ShouldBind(&req); err != nil {
 		c.JSON(http.StatusBadRequest, pkg.ErrorMsg(err.Error()))
 		return
 	}

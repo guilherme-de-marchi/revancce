@@ -27,6 +27,14 @@ func (v Varchar) Validate() error {
 	return v.validate(v.Value)
 }
 
+func (v Varchar) GetValue() any {
+	return v.Value
+}
+
+func (v Varchar) IsNil() bool {
+	return v.Value == nil
+}
+
 func NewVarchar(size int, require bool) Varchar {
 	return Varchar{validate: func(v *string) error {
 		if v == nil {

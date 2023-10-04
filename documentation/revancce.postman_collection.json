@@ -127,7 +127,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"event3\",\n    \"company\": \"c91da189-aaf6-41da-974e-caa35b4a0af1\"\n}",
+							"raw": "{\n    \"name\": \"event4\",\n    \"company\": \"c91da189-aaf6-41da-974e-caa35b4a0af1\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -189,7 +189,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{addr}}/api/v1/event/ee7bc78d-0432-4247-8289-5f723a54ec60",
+							"raw": "{{addr}}/api/v1/event/:id",
 							"host": [
 								"{{addr}}"
 							],
@@ -197,7 +197,13 @@
 								"api",
 								"v1",
 								"event",
-								"ee7bc78d-0432-4247-8289-5f723a54ec60"
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
 							]
 						}
 					},
@@ -212,7 +218,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{addr}}/api/v1/event/location",
+							"raw": "{{addr}}/api/v1/event/location?id=a712ecbb-4890-4613-8514-de85ffb442ff",
 							"host": [
 								"{{addr}}"
 							],
@@ -225,8 +231,7 @@
 							"query": [
 								{
 									"key": "id",
-									"value": "",
-									"disabled": true
+									"value": "a712ecbb-4890-4613-8514-de85ffb442ff"
 								},
 								{
 									"key": "event",
@@ -270,7 +275,66 @@
 								},
 								{
 									"key": "limit",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "event schedule",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{addr}}/api/v1/event/schedule?to=2015-09-30T17:17:25-03:00",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"event",
+								"schedule"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "84d261f0-d2b6-4c0b-8dc0-d12dc7ffae99",
+									"disabled": true
+								},
+								{
+									"key": "event",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "from",
+									"value": "2011-09-26T17:17:25-03:00",
+									"disabled": true
+								},
+								{
+									"key": "to",
+									"value": "2015-09-30T17:17:25-03:00"
+								},
+								{
+									"key": "offset",
 									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "1",
 									"disabled": true
 								}
 							]
@@ -308,6 +372,35 @@
 					"response": []
 				},
 				{
+					"name": "event schedule",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"event\": \"ee7bc78d-0432-4247-8289-5f723a54ec60\",\n    \"starts_at\": \"2011-09-27 17:17:25\",\n    \"ends_at\": \"2015-09-27 17:17:25\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{addr}}/api/v1/event/schedule",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"event",
+								"schedule"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "event location",
 					"request": {
 						"method": "DELETE",
@@ -335,6 +428,33 @@
 					"response": []
 				},
 				{
+					"name": "event schedule",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{addr}}/api/v1/event/schedule/:id",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"event",
+								"schedule",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "7912d492-d9c7-43a4-9f2f-9abd63c52213"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "event location",
 					"request": {
 						"method": "PUT",
@@ -349,7 +469,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{addr}}/api/v1/event/location/7c9a888b-d673-42dc-8162-c40a1564b32f",
+							"raw": "{{addr}}/api/v1/event/location/:id",
 							"host": [
 								"{{addr}}"
 							],
@@ -358,7 +478,49 @@
 								"v1",
 								"event",
 								"location",
-								"7c9a888b-d673-42dc-8162-c40a1564b32f"
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "event schedule",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"event\": \"ee7bc78d-0432-4247-8289-5f723a54ec60\",\n    \"starts_at\": \"2011-09-27T17:17:25-03:00\",\n    \"ends_at\": \"2015-09-27T17:17:25-03:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{addr}}/api/v1/event/schedule/:id",
+							"host": [
+								"{{addr}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"event",
+								"schedule",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "70800901-09dc-4dcd-8d9a-5d0e8f3c0373"
+								}
 							]
 						}
 					},
@@ -370,7 +532,7 @@
 				"apikey": [
 					{
 						"key": "value",
-						"value": "641b07fed9e5f2b3d27ac0fe5720d180ccca35117e46b34f411891793b6cafde7cd7c4b6430ec3ee6949416fa4470bfda163e51bb8d3d9fe8ece2265de9307d513642f8b033761ca4afd6a226e8f240dec6c90d66ea0624db96d7d19ce2c98d36081013fbb56f62b9908b6aca42b80bec1acbb8bfa6cd934ebdf79ffa6aa8367426494c3a71c8a5dd1928203553a7141dffbd85c1921bdb8896138b6d1268677b68e8b2a4b690455aaaf7fb0228cf6e56310a4216ee48f06785752d1e48bf60c0dbc50306737aea5d5717d1f147dffa8a310749c4593a89399c89d65dcafd47b030381af8db1788848f25f652887970e7001a5aa3a0cf07e057b9de2d374dad2",
+						"value": "0ce9c4871c20e25b713b087b0afb7c58d357a2e24642eca9c27fa0e59836f4831eb36ac4e9b2e2e2e1c1ef47630e0f7cad9b5d27776249981ae19c7620c6f557d37dea295a4b82d742d5438c8cb485fed08407d13c2f1051023b746f88838020dc5536d4b9f7d95010d8a70ad1208dd71f6210098d9ccd4abf80311e3cf6cf3c86816ec7f013ee7b5230bf15ec6d18ae246d8e60c2d23f2584eb1e07da9230823008bee916637eb573e7c0038259f41ad14c87c4d14d1680018f9af2490522e660156fb2edc2316115e074275cd03cc00e9e672f7687f6696a9f57215d9ec8431c8a3e430cfac6cdd3e4baae0c833866c51616fa921155849ef1888524b72f12",
 						"type": "string"
 					},
 					{

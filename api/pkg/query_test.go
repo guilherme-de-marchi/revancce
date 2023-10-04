@@ -1,18 +1,26 @@
 package pkg
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestGenerateQueryConditionals(t *testing.T) {
+	a := NewVarchar(3, false)
+	a.Value = Pointer("def")
+
+	b := NewVarchar(3, false)
+	b.Value = Pointer("jkl")
+
 	query, values := GenerateQueryParams(
-		map[string]*string{
-			"abc": Pointer("def"),
-			"ghi": Pointer("jkl"),
+		[]QueryParam{
+			NewQueryParam("abc", a, "="),
+			NewQueryParam("ghi", a, "="),
 		},
 		"where",
 		"and",
 		1,
 	)
-	if query != "where abc=$1 and ghi=$2 " {
+	if query != "where abc = $1 and ghi = $2 " {
 		t.Error("invalid query")
 		t.Log(query)
 	}
@@ -22,15 +30,15 @@ func TestGenerateQueryConditionals(t *testing.T) {
 	}
 
 	query, values = GenerateQueryParams(
-		map[string]*string{
-			"abc": Pointer("def"),
-			"ghi": Pointer("jkl"),
+		[]QueryParam{
+			NewQueryParam("abc", a, "="),
+			NewQueryParam("ghi", a, "="),
 		},
 		"set",
 		",",
 		2,
 	)
-	if query != "set abc=$2 , ghi=$3 " {
+	if query != "set abc = $2 , ghi = $3 " {
 		t.Error("invalid query")
 		t.Log(query)
 	}
@@ -39,8 +47,8 @@ func TestGenerateQueryConditionals(t *testing.T) {
 		t.Log(query, values)
 	}
 
-	query, values = GenerateQueryParams[string](
-		map[string]*string{},
+	query, values = GenerateQueryParams(
+		[]QueryParam{},
 		"where",
 		"and",
 		0,
@@ -61,7 +69,7 @@ func TestGenerateQueryPagination(t *testing.T) {
 			"abc": Pointer(1),
 			"ghi": Pointer(2),
 		},
-		0,
+		1,
 	)
 	if query != "abc $1 ghi $2 " {
 		t.Error("invalid query")

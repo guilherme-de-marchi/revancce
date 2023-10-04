@@ -8,47 +8,36 @@ import (
 	"github.com/guilherme-de-marchi/revancce/api/v1/model"
 )
 
-// ID      *string `form:"id"`
-// 	Event   *string `form:"event"`
-// 	Country *string `form:"country"`
-// 	State   *string `form:"state"`
-// 	City    *string `form:"city"`
-// 	Street  *string `form:"street"`
-// 	Number  *string `form:"number"`
-// 	Offset  *int    `form:"offset"`
-// 	Page    *int    `form:"page"`
-// 	Limit   *int    `form:"limit"`
-
 func EventLocationGet(ctx context.Context, in model.EventLocationGetIn) ([]model.EventLocationGetOut, error) {
 	params, paramsValues := pkg.GenerateQueryParams(
-		map[string]*string{
-			"id":      in.ID,
-			"event":   in.Event,
-			"country": in.Country,
-			"state":   in.State,
-			"city":    in.City,
-			"street":  in.Street,
-			"number":  in.Number,
+		[]pkg.QueryParam{
+			pkg.NewQueryParam("id", in.ID, "="),
+			pkg.NewQueryParam("event", in.Event, "="),
+			pkg.NewQueryParam("country", in.Country, "="),
+			pkg.NewQueryParam("state", in.State, "="),
+			pkg.NewQueryParam("city", in.City, "="),
+			pkg.NewQueryParam("street", in.Street, "="),
+			pkg.NewQueryParam("number", in.Number, "="),
 		},
 		"where",
 		"and",
 		1,
 	)
 
-	if in.Limit != nil {
-		if *in.Limit > 10 {
-			*in.Limit = 10
-		} else if *in.Limit == 0 {
-			*in.Limit = 1
+	if in.Limit.Value != nil {
+		if *in.Limit.Value > 10 {
+			*in.Limit.Value = 10
+		} else if *in.Limit.Value == 0 {
+			*in.Limit.Value = 1
 		}
 	} else {
-		in.Limit = pkg.Pointer(10)
+		in.Limit.Value = pkg.Pointer(10)
 	}
 
 	paginations, paginationValues := pkg.GenerateQueryPagination(
 		map[string]*int{
-			"offset": pkg.CalcOptionalOffset(in.Offset, in.Page, in.Limit),
-			"limit":  in.Limit,
+			"offset": pkg.CalcOptionalOffset(in.Offset.Value, in.Page.Value, in.Limit.Value),
+			"limit":  in.Limit.Value,
 		},
 		len(paramsValues)+1,
 	)
@@ -144,15 +133,15 @@ func EventLocationDelete(ctx context.Context, in model.EventLocationDeleteIn) er
 
 func EventLocationUpdate(ctx context.Context, in model.EventLocationUpdateIn) error {
 	params, paramsValues := pkg.GenerateQueryParams(
-		map[string]*string{
-			"event":           in.Event,
-			"country":         in.Country,
-			"state":           in.State,
-			"city":            in.City,
-			"street":          in.Street,
-			"number":          in.Number,
-			"additional_info": in.AdditionalInfo,
-			"maps_url":        in.MapsURL,
+		[]pkg.QueryParam{
+			pkg.NewQueryParam("event", in.Event, "="),
+			pkg.NewQueryParam("country", in.Country, "="),
+			pkg.NewQueryParam("state", in.State, "="),
+			pkg.NewQueryParam("city", in.City, "="),
+			pkg.NewQueryParam("street", in.Street, "="),
+			pkg.NewQueryParam("number", in.Number, "="),
+			pkg.NewQueryParam("additional_info", in.AdditionalInfo, "="),
+			pkg.NewQueryParam("maps_url", in.MapsURL, "="),
 		},
 		"",
 		",",
