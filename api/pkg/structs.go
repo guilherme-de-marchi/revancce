@@ -59,7 +59,12 @@ func ValidateStruct(s any) error {
 }
 
 func getFieldName(f reflect.StructField) string {
-	tags := strings.Split(f.Tag.Get("json"), ",")
+	tag := f.Tag.Get("json")
+	if tag == "" {
+		tag = f.Tag.Get("form")
+	}
+
+	tags := strings.Split(tag, ",")
 	if len(tags) > 0 {
 		return tags[0]
 	}

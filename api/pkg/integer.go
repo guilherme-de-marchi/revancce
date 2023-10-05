@@ -14,7 +14,7 @@ func (v *Integer) UnmarshalJSON(bytes []byte) error {
 	}
 
 	v.Value = &s
-	return nil
+	return v.Validate()
 }
 
 func (v Integer) Validate() error {
@@ -26,7 +26,7 @@ func (v Integer) Validate() error {
 }
 
 func (v Integer) GetValue() any {
-	return v.validate(v.Value)
+	return v.Value
 }
 
 func (v Integer) IsNil() bool {

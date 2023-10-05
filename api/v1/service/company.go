@@ -11,8 +11,8 @@ import (
 	"github.com/jackc/pgerrcode"
 )
 
-func EventLocationGet(ctx context.Context, in model.EventLocationGetIn) (int, any) {
-	resp, err := repository.EventLocationGet(ctx, in)
+func CompanyGet(ctx context.Context, in model.CompanyGetIn) (int, any) {
+	resp, err := repository.CompanyGet(ctx, in)
 	if err == nil {
 		if len(resp) == 0 {
 			return http.StatusNoContent, nil
@@ -25,8 +25,8 @@ func EventLocationGet(ctx context.Context, in model.EventLocationGetIn) (int, an
 	return http.StatusInternalServerError, pkg.ErrorMsg(err.Error())
 }
 
-func EventLocationPost(ctx context.Context, in model.EventLocationPostIn) (int, any) {
-	err := repository.EventLocationPost(ctx, in)
+func CompanyPost(ctx context.Context, in model.CompanyPostIn) (int, any) {
+	err := repository.CompanyPost(ctx, in)
 	if err == nil {
 		return http.StatusCreated, nil
 	}
@@ -53,8 +53,8 @@ func EventLocationPost(ctx context.Context, in model.EventLocationPostIn) (int, 
 	return status, pkg.ErrorMsg(err.Error())
 }
 
-func EventLocationDelete(ctx context.Context, in model.EventLocationDeleteIn) (int, any) {
-	err := repository.EventLocationDelete(ctx, in)
+func CompanyDelete(ctx context.Context, in model.CompanyDeleteIn) (int, any) {
+	err := repository.CompanyDelete(ctx, in)
 	if err == nil {
 		return http.StatusOK, nil
 	}
@@ -79,8 +79,8 @@ func EventLocationDelete(ctx context.Context, in model.EventLocationDeleteIn) (i
 	return status, pkg.ErrorMsg(err.Error())
 }
 
-func EventLocationUpdate(ctx context.Context, in model.EventLocationUpdateIn) (int, any) {
-	err := repository.EventLocationUpdate(ctx, in)
+func CompanyUpdate(ctx context.Context, in model.CompanyUpdateIn) (int, any) {
+	err := repository.CompanyUpdate(ctx, in)
 	if err == nil {
 		return http.StatusOK, nil
 	}

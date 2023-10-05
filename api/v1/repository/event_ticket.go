@@ -8,16 +8,12 @@ import (
 	"github.com/guilherme-de-marchi/revancce/api/v1/model"
 )
 
-func EventLocationGet(ctx context.Context, in model.EventLocationGetIn) ([]model.EventLocationGetOut, error) {
+func EventTicketGet(ctx context.Context, in model.EventTicketGetIn) ([]model.EventTicketGetOut, error) {
 	params, paramsValues := pkg.GenerateQueryParams(
 		[]pkg.QueryParam{
 			pkg.NewQueryParam("id", in.ID, "="),
 			pkg.NewQueryParam("event", in.Event, "="),
-			pkg.NewQueryParam("country", in.Country, "="),
-			pkg.NewQueryParam("state", in.State, "="),
-			pkg.NewQueryParam("city", in.City, "="),
-			pkg.NewQueryParam("street", in.Street, "="),
-			pkg.NewQueryParam("number", in.Number, "="),
+			pkg.NewQueryParam("name", in.Name, "="),
 		},
 		"where",
 		"and",
@@ -49,14 +45,8 @@ func EventLocationGet(ctx context.Context, in model.EventLocationGetIn) ([]model
 				select
 					id,
 					event, 
-					country, 
-					state, 
-					city, 
-					street, 
-					number, 
-					additional_info, 
-					maps_url
-				from events_locations
+					name
+				from events_tickets
 				%s 
 				%s
 			`,
@@ -73,19 +63,13 @@ func EventLocationGet(ctx context.Context, in model.EventLocationGetIn) ([]model
 		return nil, pkg.Error(err)
 	}
 
-	var out []model.EventLocationGetOut
+	var out []model.EventTicketGetOut
 	for rows.Next() {
-		var v model.EventLocationGetOut
+		var v model.EventTicketGetOut
 		err := rows.Scan(
 			&v.ID,
 			&v.Event,
-			&v.Country,
-			&v.State,
-			&v.City,
-			&v.Street,
-			&v.Number,
-			&v.AdditionalInfo,
-			&v.MapsURL,
+			&v.Name,
 		)
 		if err != nil {
 			return nil, pkg.Error(err)
@@ -96,33 +80,27 @@ func EventLocationGet(ctx context.Context, in model.EventLocationGetIn) ([]model
 	return out, nil
 }
 
-func EventLocationPost(ctx context.Context, in model.EventLocationPostIn) error {
+func EventTicketPost(ctx context.Context, in model.EventTicketPostIn) error {
 	_, err := pkg.Database.Exec(
 		ctx,
 		`
-			insert into events_locations
-			(event, country, state, city, street, number, additional_info, maps_url, created_by)
-			values ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+			insert into events_tickets
+			(event, name, created_by)
+			values ($1, $2, $3)
 		`,
 		in.Event,
-		in.Country,
-		in.State,
-		in.City,
-		in.Street,
-		in.Number,
-		in.AdditionalInfo,
-		in.MapsURL,
+		in.Name,
 		in.AdminID,
 	)
 
 	return pkg.Error(err)
 }
 
-func EventLocationDelete(ctx context.Context, in model.EventLocationDeleteIn) error {
+func EventTicketDelete(ctx context.Context, in model.EventTicketDeleteIn) error {
 	_, err := pkg.Database.Exec(
 		ctx,
 		`
-			delete from events_locations
+			delete from events_tickets
 			where id=$1
 		`,
 		in.ID,
@@ -131,17 +109,11 @@ func EventLocationDelete(ctx context.Context, in model.EventLocationDeleteIn) er
 	return pkg.Error(err)
 }
 
-func EventLocationUpdate(ctx context.Context, in model.EventLocationUpdateIn) error {
+func EventTicketUpdate(ctx context.Context, in model.EventTicketUpdateIn) error {
 	params, paramsValues := pkg.GenerateQueryParams(
 		[]pkg.QueryParam{
 			pkg.NewQueryParam("event", in.Event, "="),
-			pkg.NewQueryParam("country", in.Country, "="),
-			pkg.NewQueryParam("state", in.State, "="),
-			pkg.NewQueryParam("city", in.City, "="),
-			pkg.NewQueryParam("street", in.Street, "="),
-			pkg.NewQueryParam("number", in.Number, "="),
-			pkg.NewQueryParam("additional_info", in.AdditionalInfo, "="),
-			pkg.NewQueryParam("maps_url", in.MapsURL, "="),
+			pkg.NewQueryParam("name", in.Name, "="),
 		},
 		"",
 		",",
@@ -152,7 +124,7 @@ func EventLocationUpdate(ctx context.Context, in model.EventLocationUpdateIn) er
 		ctx,
 		fmt.Sprintf(
 			`
-			update events_locations
+			update events_tickets
 			set %s
 			where id=$1
 			`,

@@ -8,16 +8,19 @@ import (
 	"github.com/guilherme-de-marchi/revancce/api/v1/model"
 )
 
-func EventLocationGet(ctx context.Context, in model.EventLocationGetIn) ([]model.EventLocationGetOut, error) {
+func EventBatchGet(ctx context.Context, in model.EventBatchGetIn) ([]model.EventBatchGetOut, error) {
 	params, paramsValues := pkg.GenerateQueryParams(
 		[]pkg.QueryParam{
 			pkg.NewQueryParam("id", in.ID, "="),
-			pkg.NewQueryParam("event", in.Event, "="),
-			pkg.NewQueryParam("country", in.Country, "="),
-			pkg.NewQueryParam("state", in.State, "="),
-			pkg.NewQueryParam("city", in.City, "="),
-			pkg.NewQueryParam("street", in.Street, "="),
+			pkg.NewQueryParam("ticket", in.Ticket, "="),
 			pkg.NewQueryParam("number", in.Number, "="),
+			pkg.NewQueryParam("limit_amount", in.FromLimitAmount, ">="),
+			pkg.NewQueryParam("limit_amount", in.ToLimitAmount, "<="),
+			pkg.NewQueryParam("limit_time", in.FromLimitTime, ">="),
+			pkg.NewQueryParam("limit_time", in.ToLimitTime, "<="),
+			pkg.NewQueryParam("opened", in.Opened, "="),
+			pkg.NewQueryParam("price", in.FromPrice, ">="),
+			pkg.NewQueryParam("price", in.ToPrice, "<="),
 		},
 		"where",
 		"and",
@@ -48,15 +51,13 @@ func EventLocationGet(ctx context.Context, in model.EventLocationGetIn) ([]model
 			`
 				select
 					id,
-					event, 
-					country, 
-					state, 
-					city, 
-					street, 
-					number, 
-					additional_info, 
-					maps_url
-				from events_locations
+					ticket, 
+					number,
+					limit_amount,
+					limit_time,
+					opened,
+					price
+				from events_batches
 				%s 
 				%s
 			`,
@@ -73,19 +74,17 @@ func EventLocationGet(ctx context.Context, in model.EventLocationGetIn) ([]model
 		return nil, pkg.Error(err)
 	}
 
-	var out []model.EventLocationGetOut
+	var out []model.EventBatchGetOut
 	for rows.Next() {
-		var v model.EventLocationGetOut
+		var v model.EventBatchGetOut
 		err := rows.Scan(
 			&v.ID,
-			&v.Event,
-			&v.Country,
-			&v.State,
-			&v.City,
-			&v.Street,
+			&v.Ticket,
 			&v.Number,
-			&v.AdditionalInfo,
-			&v.MapsURL,
+			&v.LimitAmount,
+			&v.LimitTime,
+			&v.Opened,
+			&v.Price,
 		)
 		if err != nil {
 			return nil, pkg.Error(err)
@@ -96,33 +95,29 @@ func EventLocationGet(ctx context.Context, in model.EventLocationGetIn) ([]model
 	return out, nil
 }
 
-func EventLocationPost(ctx context.Context, in model.EventLocationPostIn) error {
+func EventBatchPost(ctx context.Context, in model.EventBatchPostIn) error {
 	_, err := pkg.Database.Exec(
 		ctx,
 		`
-			insert into events_locations
-			(event, country, state, city, street, number, additional_info, maps_url, created_by)
-			values ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+			insert into events_batches
+			(ticket, limit_amount, limit_time, price, created_by)
+			values ($1, $2, $3, $4, $5)
 		`,
-		in.Event,
-		in.Country,
-		in.State,
-		in.City,
-		in.Street,
-		in.Number,
-		in.AdditionalInfo,
-		in.MapsURL,
+		in.Ticket,
+		in.LimitAmount,
+		in.LimitTime,
+		in.Price,
 		in.AdminID,
 	)
 
 	return pkg.Error(err)
 }
 
-func EventLocationDelete(ctx context.Context, in model.EventLocationDeleteIn) error {
+func EventBatchDelete(ctx context.Context, in model.EventBatchDeleteIn) error {
 	_, err := pkg.Database.Exec(
 		ctx,
 		`
-			delete from events_locations
+			delete from events_batches
 			where id=$1
 		`,
 		in.ID,
@@ -131,17 +126,14 @@ func EventLocationDelete(ctx context.Context, in model.EventLocationDeleteIn) er
 	return pkg.Error(err)
 }
 
-func EventLocationUpdate(ctx context.Context, in model.EventLocationUpdateIn) error {
+func EventBatchUpdate(ctx context.Context, in model.EventBatchUpdateIn) error {
 	params, paramsValues := pkg.GenerateQueryParams(
 		[]pkg.QueryParam{
-			pkg.NewQueryParam("event", in.Event, "="),
-			pkg.NewQueryParam("country", in.Country, "="),
-			pkg.NewQueryParam("state", in.State, "="),
-			pkg.NewQueryParam("city", in.City, "="),
-			pkg.NewQueryParam("street", in.Street, "="),
-			pkg.NewQueryParam("number", in.Number, "="),
-			pkg.NewQueryParam("additional_info", in.AdditionalInfo, "="),
-			pkg.NewQueryParam("maps_url", in.MapsURL, "="),
+			pkg.NewQueryParam("ticket", in.Ticket, "="),
+			pkg.NewQueryParam("limit_amount", in.LimitAmount, "="),
+			pkg.NewQueryParam("limit_time", in.LimitTime, "="),
+			pkg.NewQueryParam("opened", in.Opened, "="),
+			pkg.NewQueryParam("price", in.Price, "="),
 		},
 		"",
 		",",
@@ -152,7 +144,7 @@ func EventLocationUpdate(ctx context.Context, in model.EventLocationUpdateIn) er
 		ctx,
 		fmt.Sprintf(
 			`
-			update events_locations
+			update events_batches
 			set %s
 			where id=$1
 			`,

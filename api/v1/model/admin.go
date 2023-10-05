@@ -31,13 +31,13 @@ type AdminRegisterReq struct {
 	Password pkg.Varchar `json:"password"`
 }
 
+func (v AdminRegisterReq) Validate() error {
+	return pkg.ValidateStruct(v)
+}
+
 type AdminRegisterIn struct {
 	Name     string
 	Email    string
 	Password string
 	AdminID  string
-}
-
-func (v AdminRegisterReq) Validate() error {
-	return pkg.ValidateStruct(v)
 }

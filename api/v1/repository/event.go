@@ -65,11 +65,11 @@ func EventGet(ctx context.Context, in model.EventGetIn) ([]model.EventGetOut, er
 
 	var out []model.EventGetOut
 	for rows.Next() {
-		var event model.EventGetOut
-		if err := rows.Scan(&event.ID, &event.Name, &event.Company); err != nil {
+		var v model.EventGetOut
+		if err := rows.Scan(&v.ID, &v.Name, &v.Company); err != nil {
 			return nil, pkg.Error(err)
 		}
-		out = append(out, event)
+		out = append(out, v)
 	}
 
 	return out, nil

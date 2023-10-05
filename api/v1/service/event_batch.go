@@ -11,8 +11,8 @@ import (
 	"github.com/jackc/pgerrcode"
 )
 
-func EventLocationGet(ctx context.Context, in model.EventLocationGetIn) (int, any) {
-	resp, err := repository.EventLocationGet(ctx, in)
+func EventBatchGet(ctx context.Context, in model.EventBatchGetIn) (int, any) {
+	resp, err := repository.EventBatchGet(ctx, in)
 	if err == nil {
 		if len(resp) == 0 {
 			return http.StatusNoContent, nil
@@ -25,8 +25,8 @@ func EventLocationGet(ctx context.Context, in model.EventLocationGetIn) (int, an
 	return http.StatusInternalServerError, pkg.ErrorMsg(err.Error())
 }
 
-func EventLocationPost(ctx context.Context, in model.EventLocationPostIn) (int, any) {
-	err := repository.EventLocationPost(ctx, in)
+func EventBatchPost(ctx context.Context, in model.EventBatchPostIn) (int, any) {
+	err := repository.EventBatchPost(ctx, in)
 	if err == nil {
 		return http.StatusCreated, nil
 	}
@@ -44,6 +44,9 @@ func EventLocationPost(ctx context.Context, in model.EventLocationPostIn) (int, 
 		pgerrcode.InvalidTextRepresentation:
 		err = errors.New("invalid value")
 		status = http.StatusBadRequest
+	case pgerrcode.InvalidDatetimeFormat:
+		err = errors.New("invalid datetime format")
+		status = http.StatusBadRequest
 	default:
 		pkg.Log.Println(err)
 		err = errors.New("something went wrong")
@@ -53,8 +56,8 @@ func EventLocationPost(ctx context.Context, in model.EventLocationPostIn) (int, 
 	return status, pkg.ErrorMsg(err.Error())
 }
 
-func EventLocationDelete(ctx context.Context, in model.EventLocationDeleteIn) (int, any) {
-	err := repository.EventLocationDelete(ctx, in)
+func EventBatchDelete(ctx context.Context, in model.EventBatchDeleteIn) (int, any) {
+	err := repository.EventBatchDelete(ctx, in)
 	if err == nil {
 		return http.StatusOK, nil
 	}
@@ -79,8 +82,8 @@ func EventLocationDelete(ctx context.Context, in model.EventLocationDeleteIn) (i
 	return status, pkg.ErrorMsg(err.Error())
 }
 
-func EventLocationUpdate(ctx context.Context, in model.EventLocationUpdateIn) (int, any) {
-	err := repository.EventLocationUpdate(ctx, in)
+func EventBatchUpdate(ctx context.Context, in model.EventBatchUpdateIn) (int, any) {
+	err := repository.EventBatchUpdate(ctx, in)
 	if err == nil {
 		return http.StatusOK, nil
 	}
@@ -97,6 +100,9 @@ func EventLocationUpdate(ctx context.Context, in model.EventLocationUpdateIn) (i
 		pgerrcode.InvalidTextRepresentation,
 		pgerrcode.UniqueViolation:
 		err = errors.New("invalid field")
+		status = http.StatusBadRequest
+	case pgerrcode.InvalidDatetimeFormat:
+		err = errors.New("invalid datetime format")
 		status = http.StatusBadRequest
 	default:
 		pkg.Log.Println(err)

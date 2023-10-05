@@ -16,7 +16,7 @@ func (v *Varchar) UnmarshalJSON(bytes []byte) error {
 	}
 
 	v.Value = &s
-	return nil
+	return v.Validate()
 }
 
 func (v Varchar) Validate() error {

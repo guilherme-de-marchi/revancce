@@ -9,18 +9,17 @@ import (
 	"github.com/guilherme-de-marchi/revancce/api/v1/service"
 )
 
-func (c Controllers) EventGet() {
-	c.Group.GET("/event", eventGet)
+func (c Controllers) CompanyGet() {
+	c.Group.GET("/company", companyGet)
 }
 
-func eventGet(c *gin.Context) {
-	req := model.EventGetReq{
-		ID:      pkg.NewVarchar(40, false),
-		Name:    pkg.NewVarchar(20, false),
-		Company: pkg.NewVarchar(40, false),
-		Offset:  pkg.NewInteger(false),
-		Page:    pkg.NewInteger(false),
-		Limit:   pkg.NewInteger(false),
+func companyGet(c *gin.Context) {
+	req := model.CompanyGetReq{
+		ID:     pkg.NewVarchar(40, false),
+		Name:   pkg.NewVarchar(20, false),
+		Offset: pkg.NewInteger(false),
+		Page:   pkg.NewInteger(false),
+		Limit:  pkg.NewInteger(false),
 	}
 
 	m := make(map[string]string)
@@ -39,23 +38,22 @@ func eventGet(c *gin.Context) {
 		return
 	}
 
-	c.JSON(service.EventGet(c, model.EventGetIn(req)))
+	c.JSON(service.CompanyGet(c, model.CompanyGetIn(req)))
 }
 
-func (c Controllers) EventPost() {
-	c.Group.POST("/event", pkg.RequireAdminSession, eventPost)
+func (c Controllers) CompanyPost() {
+	c.Group.POST("/company", pkg.RequireAdminSession, companyPost)
 }
 
-func eventPost(c *gin.Context) {
+func companyPost(c *gin.Context) {
 	adminID := c.GetString("admin-id")
 	if adminID == "" {
 		c.Status(http.StatusUnauthorized)
 		return
 	}
 
-	req := model.EventPostReq{
-		Name:    pkg.NewVarchar(20, true),
-		Company: pkg.NewVarchar(40, true),
+	req := model.CompanyPostReq{
+		Name: pkg.NewVarchar(20, true),
 	}
 
 	if err := c.ShouldBind(&req); err != nil {
@@ -68,41 +66,39 @@ func eventPost(c *gin.Context) {
 		return
 	}
 
-	c.JSON(service.EventPost(c, model.EventPostIn{
+	c.JSON(service.CompanyPost(c, model.CompanyPostIn{
 		Name:    *req.Name.Value,
-		Company: *req.Company.Value,
 		AdminID: adminID,
 	}))
 }
 
-func (c Controllers) EventDelete() {
-	c.Group.DELETE("/event/:id", pkg.RequireAdminSession, eventDelete)
+func (c Controllers) CompanyDelete() {
+	c.Group.DELETE("/company/:id", pkg.RequireAdminSession, companyDelete)
 }
 
-func eventDelete(c *gin.Context) {
+func companyDelete(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {
 		c.JSON(http.StatusBadRequest, pkg.ErrorMsg("param 'id' is empty"))
 		return
 	}
 
-	c.JSON(service.EventDelete(c, model.EventDeleteIn{ID: id}))
+	c.JSON(service.CompanyDelete(c, model.CompanyDeleteIn{ID: id}))
 }
 
-func (c Controllers) EventUpdate() {
-	c.Group.PUT("/event/:id", pkg.RequireAdminSession, eventUpdate)
+func (c Controllers) CompanyUpdate() {
+	c.Group.PUT("/company/:id", pkg.RequireAdminSession, companyUpdate)
 }
 
-func eventUpdate(c *gin.Context) {
+func companyUpdate(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {
 		c.JSON(http.StatusBadRequest, pkg.ErrorMsg("param 'id' is empty"))
 		return
 	}
 
-	req := model.EventUpdateReq{
-		Name:    pkg.NewVarchar(20, false),
-		Company: pkg.NewVarchar(40, false),
+	req := model.CompanyUpdateReq{
+		Name: pkg.NewVarchar(20, false),
 	}
 
 	if err := c.ShouldBind(&req); err != nil {
@@ -115,8 +111,8 @@ func eventUpdate(c *gin.Context) {
 		return
 	}
 
-	c.JSON(service.EventUpdate(c, model.EventUpdateIn{
-		ID:             id,
-		EventUpdateReq: req,
+	c.JSON(service.CompanyUpdate(c, model.CompanyUpdateIn{
+		ID:               id,
+		CompanyUpdateReq: req,
 	}))
 }

@@ -17,6 +17,10 @@ type EventLocationGetReq struct {
 	Limit   pkg.Integer `form:"limit"`
 }
 
+func (v EventLocationGetReq) Validate() error {
+	return pkg.ValidateStruct(v)
+}
+
 type EventLocationGetIn EventLocationGetReq
 
 type EventLocationGetOut struct {

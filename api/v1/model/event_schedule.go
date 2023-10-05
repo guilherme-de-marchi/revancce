@@ -16,6 +16,10 @@ type EventScheduleGetReq struct {
 	Limit  pkg.Integer `form:"limit"`
 }
 
+func (v EventScheduleGetReq) Validate() error {
+	return pkg.ValidateStruct(v)
+}
+
 type EventScheduleGetIn EventScheduleGetReq
 
 type EventScheduleGetOut struct {

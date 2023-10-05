@@ -97,7 +97,8 @@ func EventScheduleUpdate(ctx context.Context, in model.EventScheduleUpdateIn) (i
 	var status int
 	switch pgErr.Code {
 	case pgerrcode.ForeignKeyViolation,
-		pgerrcode.InvalidTextRepresentation:
+		pgerrcode.InvalidTextRepresentation,
+		pgerrcode.UniqueViolation:
 		err = errors.New("invalid field")
 		status = http.StatusBadRequest
 	case pgerrcode.InvalidDatetimeFormat:

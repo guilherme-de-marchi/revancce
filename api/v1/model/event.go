@@ -11,6 +11,10 @@ type EventGetReq struct {
 	Limit   pkg.Integer `form:"limit"`
 }
 
+func (v EventGetReq) Validate() error {
+	return pkg.ValidateStruct(v)
+}
+
 type EventGetIn EventGetReq
 
 type EventGetOut struct {

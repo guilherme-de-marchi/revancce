@@ -34,7 +34,12 @@ func eventLocationGet(c *gin.Context) {
 	}
 
 	if err := pkg.BindQuery(m, &req); err != nil {
-		c.JSON(http.StatusInternalServerError, pkg.ErrorMsg("unable to bind query"))
+		c.JSON(http.StatusBadRequest, pkg.ErrorMsg(err.Error()))
+		return
+	}
+
+	if err := req.Validate(); err != nil {
+		c.JSON(http.StatusBadRequest, pkg.ErrorMsg(err.Error()))
 		return
 	}
 
@@ -112,17 +117,22 @@ func eventLocationUpdate(c *gin.Context) {
 	}
 
 	req := model.EventLocationUpdateReq{
-		Event:          pkg.NewVarchar(40, true),
-		Country:        pkg.NewVarchar(20, true),
-		State:          pkg.NewVarchar(20, true),
-		City:           pkg.NewVarchar(20, true),
-		Street:         pkg.NewVarchar(20, true),
-		Number:         pkg.NewVarchar(20, true),
-		AdditionalInfo: pkg.NewVarchar(100, true),
-		MapsURL:        pkg.NewVarchar(100, true),
+		Event:          pkg.NewVarchar(40, false),
+		Country:        pkg.NewVarchar(20, false),
+		State:          pkg.NewVarchar(20, false),
+		City:           pkg.NewVarchar(20, false),
+		Street:         pkg.NewVarchar(20, false),
+		Number:         pkg.NewVarchar(20, false),
+		AdditionalInfo: pkg.NewVarchar(100, false),
+		MapsURL:        pkg.NewVarchar(100, false),
 	}
 
 	if err := c.ShouldBind(&req); err != nil {
+		c.JSON(http.StatusBadRequest, pkg.ErrorMsg(err.Error()))
+		return
+	}
+
+	if err := req.Validate(); err != nil {
 		c.JSON(http.StatusBadRequest, pkg.ErrorMsg(err.Error()))
 		return
 	}

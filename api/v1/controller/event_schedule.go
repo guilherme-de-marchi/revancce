@@ -17,8 +17,8 @@ func eventScheduleGet(c *gin.Context) {
 	req := model.EventScheduleGetReq{
 		ID:     pkg.NewVarchar(40, false),
 		Event:  pkg.NewVarchar(40, false),
-		From:   pkg.NewVarchar(20, false),
-		To:     pkg.NewVarchar(20, false),
+		From:   pkg.NewVarchar(30, false),
+		To:     pkg.NewVarchar(30, false),
 		Offset: pkg.NewInteger(false),
 		Page:   pkg.NewInteger(false),
 		Limit:  pkg.NewInteger(false),
@@ -31,7 +31,12 @@ func eventScheduleGet(c *gin.Context) {
 	}
 
 	if err := pkg.BindQuery(m, &req); err != nil {
-		c.JSON(http.StatusInternalServerError, pkg.ErrorMsg("unable to bind query"))
+		c.JSON(http.StatusBadRequest, pkg.ErrorMsg(err.Error()))
+		return
+	}
+
+	if err := req.Validate(); err != nil {
+		c.JSON(http.StatusBadRequest, pkg.ErrorMsg(err.Error()))
 		return
 	}
 
@@ -51,8 +56,8 @@ func eventSchedulePost(c *gin.Context) {
 
 	req := model.EventSchedulePostReq{
 		Event:    pkg.NewVarchar(40, true),
-		StartsAt: pkg.NewVarchar(20, true),
-		EndsAt:   pkg.NewVarchar(20, true),
+		StartsAt: pkg.NewVarchar(30, true),
+		EndsAt:   pkg.NewVarchar(30, true),
 	}
 
 	if err := c.ShouldBind(&req); err != nil {
@@ -99,12 +104,17 @@ func eventScheduleUpdate(c *gin.Context) {
 	}
 
 	req := model.EventScheduleUpdateReq{
-		Event:    pkg.NewVarchar(40, true),
-		StartsAt: pkg.NewVarchar(20, false),
-		EndsAt:   pkg.NewVarchar(20, false),
+		Event:    pkg.NewVarchar(40, false),
+		StartsAt: pkg.NewVarchar(30, false),
+		EndsAt:   pkg.NewVarchar(30, false),
 	}
 
 	if err := c.ShouldBind(&req); err != nil {
+		c.JSON(http.StatusBadRequest, pkg.ErrorMsg(err.Error()))
+		return
+	}
+
+	if err := req.Validate(); err != nil {
 		c.JSON(http.StatusBadRequest, pkg.ErrorMsg(err.Error()))
 		return
 	}

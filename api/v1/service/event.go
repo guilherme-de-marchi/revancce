@@ -92,7 +92,8 @@ func EventUpdate(ctx context.Context, in model.EventUpdateIn) (int, any) {
 	var status int
 	switch pgErr.Code {
 	case pgerrcode.ForeignKeyViolation,
-		pgerrcode.InvalidTextRepresentation:
+		pgerrcode.InvalidTextRepresentation,
+		pgerrcode.UniqueViolation:
 		err = errors.New("invalid field")
 		status = http.StatusBadRequest
 	default:

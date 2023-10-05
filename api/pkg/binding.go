@@ -26,9 +26,20 @@ func BindQuery[T any](m map[string]string, obj *T) error {
 
 		n, err := strconv.Atoi(vv)
 		if err == nil {
-			xx := x.(*Integer)
-			xx.Value = &n
-			continue
+			xx, ok := x.(*Integer)
+			if ok {
+				xx.Value = &n
+				continue
+			}
+		}
+
+		b, err := strconv.ParseBool(vv)
+		if err == nil {
+			xx := x.(*Boolean)
+			if ok {
+				xx.Value = &b
+				continue
+			}
 		}
 
 		xx := x.(*Varchar)

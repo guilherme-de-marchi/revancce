@@ -11,8 +11,8 @@ import (
 	"github.com/jackc/pgerrcode"
 )
 
-func EventLocationGet(ctx context.Context, in model.EventLocationGetIn) (int, any) {
-	resp, err := repository.EventLocationGet(ctx, in)
+func EventTicketGet(ctx context.Context, in model.EventTicketGetIn) (int, any) {
+	resp, err := repository.EventTicketGet(ctx, in)
 	if err == nil {
 		if len(resp) == 0 {
 			return http.StatusNoContent, nil
@@ -25,8 +25,8 @@ func EventLocationGet(ctx context.Context, in model.EventLocationGetIn) (int, an
 	return http.StatusInternalServerError, pkg.ErrorMsg(err.Error())
 }
 
-func EventLocationPost(ctx context.Context, in model.EventLocationPostIn) (int, any) {
-	err := repository.EventLocationPost(ctx, in)
+func EventTicketPost(ctx context.Context, in model.EventTicketPostIn) (int, any) {
+	err := repository.EventTicketPost(ctx, in)
 	if err == nil {
 		return http.StatusCreated, nil
 	}
@@ -53,8 +53,8 @@ func EventLocationPost(ctx context.Context, in model.EventLocationPostIn) (int, 
 	return status, pkg.ErrorMsg(err.Error())
 }
 
-func EventLocationDelete(ctx context.Context, in model.EventLocationDeleteIn) (int, any) {
-	err := repository.EventLocationDelete(ctx, in)
+func EventTicketDelete(ctx context.Context, in model.EventTicketDeleteIn) (int, any) {
+	err := repository.EventTicketDelete(ctx, in)
 	if err == nil {
 		return http.StatusOK, nil
 	}
@@ -79,8 +79,8 @@ func EventLocationDelete(ctx context.Context, in model.EventLocationDeleteIn) (i
 	return status, pkg.ErrorMsg(err.Error())
 }
 
-func EventLocationUpdate(ctx context.Context, in model.EventLocationUpdateIn) (int, any) {
-	err := repository.EventLocationUpdate(ctx, in)
+func EventTicketUpdate(ctx context.Context, in model.EventTicketUpdateIn) (int, any) {
+	err := repository.EventTicketUpdate(ctx, in)
 	if err == nil {
 		return http.StatusOK, nil
 	}
