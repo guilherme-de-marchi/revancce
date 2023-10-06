@@ -2,11 +2,14 @@ package repository
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/guilherme-de-marchi/revancce/api/pkg"
 	"github.com/guilherme-de-marchi/revancce/api/v1/model"
 )
+
+var ErrEventBatchNotFound = errors.New("event batch not found")
 
 func EventBatchGet(ctx context.Context, in model.EventBatchGetIn) ([]model.EventBatchGetOut, error) {
 	params, paramsValues := pkg.GenerateQueryParams(

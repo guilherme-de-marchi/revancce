@@ -110,3 +110,13 @@ type PaymentWebhookOpenpixPostReq struct {
 	Account struct {
 	} `json:"account"`
 }
+
+type PaymentWebhookOpenpixPostIn struct {
+	Type        string
+	Name        string
+	CPF         string
+	Email       string
+	Phone       string
+	Transaction string
+	Batch       string
+}

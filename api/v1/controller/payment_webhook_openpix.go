@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/guilherme-de-marchi/revancce/api/pkg"
 	"github.com/guilherme-de-marchi/revancce/api/v1/model"
-	"github.com/jackc/pgx/v5"
+	"github.com/guilherme-de-marchi/revancce/api/v1/service"
 )
 
 func (c Controllers) PaymentWebhookOpenpix() {
@@ -60,60 +60,13 @@ func paymentWebhookOpenpix(c *gin.Context) {
 		break
 	}
 
-	var client string
-	row := pkg.Database.QueryRow(
-		c,
-		`
-			select id
-			from clients
-			where cpf=$1
-		`,
-		req.Pix.Payer.TaxID.TaxID,
-	)
-	err := row.Scan(&client)
-	if err != nil && err != pgx.ErrNoRows {
-		pkg.Log.Println(err)
-		c.AbortWithStatus(http.StatusInternalServerError)
-		return
-	}
-
-	if err == pgx.ErrNoRows {
-		row = pkg.Database.QueryRow(
-			c,
-			`
-				insert into clients
-				(name, email, cpf, phone)
-				values ($1, $2, $3, $4)
-				returning id
-			`,
-			req.Pix.Payer.Name,
-			req.Pix.Payer.Email,
-			req.Pix.Payer.TaxID.TaxID,
-			req.Pix.Payer.Phone,
-		)
-		if err = row.Scan(&client); err != nil {
-			pkg.Log.Println(err)
-			c.AbortWithStatus(http.StatusInternalServerError)
-			return
-		}
-	}
-
-	_, err = pkg.Database.Exec(
-		c,
-		`
-			insert into clients_tickets
-			(client, batch, transaction)
-			values ($1, $2, $3)
-		`,
-		client,
-		batch,
-		req.Charge.TransactionID,
-	)
-	if err != nil {
-		pkg.Log.Println(err)
-		c.AbortWithStatus(http.StatusInternalServerError)
-		return
-	}
-
-	c.Status(http.StatusOK)
+	c.JSON(service.PaymentWebhookOpenpix(c, model.PaymentWebhookOpenpixPostIn{
+		Type:        req.Event,
+		Name:        req.Charge.Payer.Name,
+		CPF:         req.Charge.Payer.TaxID.TaxID,
+		Email:       req.Charge.Payer.Email,
+		Phone:       req.Charge.Payer.Phone,
+		Transaction: req.Charge.TransactionID,
+		Batch:       batch,
+	}))
 }
