@@ -1,0 +1,40 @@
+footer {
+    color: white;
+    font-size: small;
+    // background-image: linear-gradient(#8b0527, #000000);
+}
+
+footer > * {
+    display: flex;
+    padding: 5%;
+    justify-content: space-around;
+}
+
+#advertise-here {
+    background-color: #a71036;
+}
+
+#social-medias {
+    background-color: #61081e;
+}
+
+#footer-info {
+    background-color: #490012;
+}
+
+#footer-info div {
+    margin: 2% 5%;
+}
+
+#footer-info div * {
+    margin-bottom: 5%;
+}
+
+#developed-by {
+    background-color: #160006;
+}
+
+h1 {
+    font-size: medium;
+    font-weight: bold;
+}

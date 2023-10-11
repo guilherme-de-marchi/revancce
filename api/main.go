@@ -4,14 +4,13 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
-	"github.com/guilherme-de-marchi/revancce/api"
 )
 
 func main() {
 	e := gin.Default()
 	e.Static("/static", "./web/public")
 
-	if err := api.Setup(e); err != nil {
+	if err := Setup(e); err != nil {
 		log.Fatal(err)
 	}
 
