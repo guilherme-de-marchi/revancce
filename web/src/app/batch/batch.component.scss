@@ -1,0 +1,30 @@
+li p {
+    font-size: large;
+    line-height: 3vh;
+}
+
+li h1 {
+    font-size: xx-large;
+    font-weight: bolder;
+    color: #910811;
+}
+
+li {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    border: 1px solid rgb(172, 172, 172);
+    border-right: none;
+    border-left: none;
+}
+
+.batch-closed {
+    background-color: white;
+    color: #56070c;
+}
+
+.batch-opened {
+    background-color: #56070c;
+    color: white;
+}

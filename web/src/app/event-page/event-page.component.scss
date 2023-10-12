@@ -1,0 +1,128 @@
+header {
+    background-image: url("../../assets/event-1.jpeg");
+    background-position: center;
+    background-size: cover;
+
+    height: 70vh;
+}
+
+section {
+    margin-top: 5vh;
+
+    color: #56070c;
+    text-align: center;
+}
+
+section p, li, h1, h2, a {
+    margin: 0 10vw;
+}
+
+section p, li, a {
+    font-size: large;
+    line-height: 3vh;
+}
+
+section h1 {
+    font-size: xx-large;
+    font-weight: bolder;
+    color: #910811;
+}
+
+section > h1 {
+    margin-bottom: 2vh;
+}
+
+section h2 {
+    margin-top: 1vh;
+
+    font-size: large;
+    font-weight: bold;
+}
+
+#event-basic-info #date-time {
+    margin-top: 4vh;
+    width: 100%;
+
+    font-size: large;
+    text-align: left;
+}
+
+#purchase-ticket {
+    padding: 5vh 0;
+
+    border: 1px solid rgb(172, 172, 172);
+    border-right: none;
+    border-left: none;
+}
+
+#purchase-ticket h1 {
+    font-size: larger;
+    margin-bottom: 1vh;
+}
+
+#purchase-ticket button {
+    margin: 2vh 0;
+    padding: 3vh 8vw;
+
+    background-color: #D9BB1C;
+    border-style: none;
+    border-color: none;
+    border-radius: 10px;
+    color: white;
+    font-size: x-large;
+    font-weight: bold;
+}
+
+#purchase-ticket a {
+    display: block;
+    text-decoration: underline !important;
+}
+
+#description h1 {
+    margin: 5vh 6vw;
+}
+
+#description ul {
+    text-align: left;
+}
+
+#description li {
+    margin-top: 2vh;
+}
+
+#description b {
+    font-weight: bold;
+}
+
+#warnings {
+    padding: 5vh 0;
+
+    background-color: #56070c;
+    color: white;
+}
+
+#warnings p {
+    margin-bottom: 2vh;
+}
+
+#warnings b {
+    font-weight: bold;
+}
+
+#location img {
+    margin-top: 4vh;
+    width: 100vw;
+}
+
+#batches * {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+#batches > h1 {
+    margin-bottom: 0;
+}
+
+#batches ul {
+    margin-top: 4vh;
+}

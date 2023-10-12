@@ -8,7 +8,7 @@ import (
 
 func main() {
 	e := gin.Default()
-	e.Static("/static", "./web/public")
+	e.Static("/static", "./web")
 
 	if err := Setup(e); err != nil {
 		log.Fatal(err)
