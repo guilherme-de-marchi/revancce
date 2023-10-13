@@ -152,3 +152,27 @@ func clientTicketCheckin(c *gin.Context) {
 		ID: *req.ID.Value,
 	}))
 }
+
+func (c Controllers) ClientTicketPurchasePost() {
+	c.Group.POST("/client/ticket/purchase", clientTicketPurchasePost)
+}
+
+func clientTicketPurchasePost(c *gin.Context) {
+	req := model.ClientTicketPurchasePostReq{
+		Batch: pkg.NewVarchar(40, true),
+	}
+
+	if err := c.ShouldBind(&req); err != nil {
+		c.JSON(http.StatusBadRequest, pkg.ErrorMsg(err.Error()))
+		return
+	}
+
+	if err := req.Validate(); err != nil {
+		c.JSON(http.StatusBadRequest, pkg.ErrorMsg(err.Error()))
+		return
+	}
+
+	c.JSON(service.ClientTicketPurchasePost(c, model.ClientTicketPurchasePostIn{
+		Batch: *req.Batch.Value,
+	}))
+}

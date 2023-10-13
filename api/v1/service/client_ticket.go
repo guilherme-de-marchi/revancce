@@ -149,3 +149,25 @@ func ClientTicketCheckin(ctx context.Context, in model.ClientTicketCheckinIn) (i
 
 	return status, pkg.ErrorMsg(err.Error())
 }
+
+func ClientTicketPurchasePost(ctx context.Context, in model.ClientTicketPurchasePostIn) (int, any) {
+	out, err := repository.ClientTicketPurchasePost(ctx, in)
+	if err == nil {
+		return http.StatusCreated, out
+	}
+
+	if errors.Is(err, repository.ErrEventBatchNotFound) {
+		return http.StatusBadRequest, pkg.ErrorMsg("batch not found")
+	}
+
+	if errors.Is(err, repository.ErrEventTicketNotFound) {
+		return http.StatusBadRequest, pkg.ErrorMsg("ticket not found")
+	}
+
+	if errors.Is(err, repository.ErrEventNotFound) {
+		return http.StatusBadRequest, pkg.ErrorMsg("event not found")
+	}
+
+	pkg.Log.Println(err)
+	return http.StatusBadRequest, pkg.ErrorMsg("something went wrong")
+}

@@ -86,3 +86,64 @@ func (v ClientTicketCheckinReq) Validate() error {
 type ClientTicketCheckinIn struct {
 	ID string
 }
+
+type ClientTicketPurchasePostReq struct {
+	Batch pkg.Varchar `json:"batch"`
+}
+
+func (v ClientTicketPurchasePostReq) Validate() error {
+	return pkg.ValidateStruct(v)
+}
+
+type ClientTicketPurchasePostIn struct {
+	Batch string
+}
+
+type ClientTicketPurchasePostOut struct {
+	PaymentLinkURL string
+}
+
+type OpenpixCreateChargeReq struct {
+	CorrelationID  string                  `json:"correlationID"`
+	Value          int                     `json:"value"`
+	Type           string                  `json:"type"`
+	Comment        string                  `json:"comment"`
+	ExpiresIn      int                     `json:"expiresIn"`
+	AdditionalInfo []OpenpixAdditionalInfo `json:"additionalInfo"`
+}
+
+type OpenpixAdditionalInfo struct {
+	Key   string `json:"key"`
+	Value string `json:"value"`
+}
+
+type OpenpixCreateChargeResp struct {
+	Charge struct {
+		Customer       interface{} `json:"customer"`
+		Value          int         `json:"value"`
+		Comment        string      `json:"comment"`
+		Identifier     string      `json:"identifier"`
+		CorrelationID  string      `json:"correlationID"`
+		PaymentLinkID  string      `json:"paymentLinkID"`
+		TransactionID  string      `json:"transactionID"`
+		Status         string      `json:"status"`
+		AdditionalInfo []struct {
+			Key   string `json:"key"`
+			Value string `json:"value"`
+		} `json:"additionalInfo"`
+		Discount          int       `json:"discount"`
+		ValueWithDiscount int       `json:"valueWithDiscount"`
+		ExpiresDate       time.Time `json:"expiresDate"`
+		Type              string    `json:"type"`
+		CreatedAt         time.Time `json:"createdAt"`
+		UpdatedAt         time.Time `json:"updatedAt"`
+		BrCode            string    `json:"brCode"`
+		ExpiresIn         int       `json:"expiresIn"`
+		PixKey            string    `json:"pixKey"`
+		PaymentLinkURL    string    `json:"paymentLinkUrl"`
+		QrCodeImage       string    `json:"qrCodeImage"`
+		GlobalID          string    `json:"globalID"`
+	} `json:"charge"`
+	CorrelationID string `json:"correlationID"`
+	BrCode        string `json:"brCode"`
+}

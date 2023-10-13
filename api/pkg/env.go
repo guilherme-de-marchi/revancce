@@ -15,6 +15,8 @@ var (
 	StripeSecretKey     = os.Getenv("STRIPE_SECRET_KEY")
 	StripeWebhookSecret = os.Getenv("STRIPE_WEBHOOK_SECRET")
 
+	OpenpixSecretKey = os.Getenv("OPENPIX_SECRET_KEY")
+
 	SendGridSecretKey      = os.Getenv("SENDGRID_SECRET_KEY")
 	SendGridPurchasesEmail = os.Getenv("SENDGRID_PURCHASES_EMAIL")
 	SendGridPurchasesName  = os.Getenv("SENDGRID_PURCHASES_NAME")

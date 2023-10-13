@@ -1,30 +1,74 @@
-li p {
+p {
     font-size: large;
     line-height: 3vh;
 }
 
-li h1 {
+h1 {
     font-size: xx-large;
     font-weight: bolder;
-    color: #910811;
 }
 
-li {
+* {
+    transition: all .5s;
+}
+
+.batch-button {
     display: flex;
-    justify-content: space-around;
     align-items: center;
+    justify-content: space-between;
+    padding: 4vh;
+    text-align: left;
 
     border: 1px solid rgb(172, 172, 172);
     border-right: none;
     border-left: none;
 }
 
-.batch-closed {
+.batch-button-closed {
     background-color: white;
     color: #56070c;
 }
 
-.batch-opened {
+.batch-button-opened {
     background-color: #56070c;
     color: white;
+}
+
+.arrow {
+    transition: none !important;
+}
+
+.arrow-closed {
+    width: 0; 
+    height: 0; 
+    border-top: 2vh solid transparent;
+    border-bottom: 2vh solid transparent;
+    
+    border-left: 2vh solid #8b8b8b;
+}
+
+.arrow-opened {
+    width: 0; 
+    height: 0; 
+    border-left: 2vh solid transparent;
+    border-right: 2vh solid transparent;
+    
+    border-top: 2vh solid white;
+}
+
+.batch-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3vh;
+}
+
+.batch-info-closed {
+    background-color: rgb(218, 218, 218);
+    color: #949494;
+}
+
+.batch-info-opened {
+    background-color: white;
+    color: #56070c;
 }

@@ -1,0 +1,13 @@
+<div id="batches">
+    <ul *ngFor='let batch of batches'>
+        <app-batch 
+            [id]="batch.id"
+            [ticket]="batch.ticket"
+            [ticketName]="batch.ticketName"
+            [rawLimitTime]="batch.rawLimitTime"
+            [limitTime]="batch.limitTime"
+            [opened]="batch.opened"
+            [price]="batch.price"
+        ></app-batch>
+    </ul>
+</div>

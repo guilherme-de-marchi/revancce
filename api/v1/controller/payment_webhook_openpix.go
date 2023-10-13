@@ -66,7 +66,7 @@ func paymentWebhookOpenpix(c *gin.Context) {
 		CPF:         req.Charge.Payer.TaxID.TaxID,
 		Email:       req.Charge.Payer.Email,
 		Phone:       req.Charge.Payer.Phone,
-		Transaction: req.Charge.TransactionID,
+		Transaction: req.Charge.CorrelationID,
 		Batch:       batch,
 	}))
 }

@@ -1,21 +1,33 @@
 footer {
     color: white;
-    font-size: small;
+    font-size: medium;
     // background-image: linear-gradient(#8b0527, #000000);
 }
 
 footer > * {
     display: flex;
     padding: 5%;
+    align-items: center;
     justify-content: space-around;
 }
 
 #advertise-here {
     background-color: #a71036;
+    font-weight: bold;
 }
 
 #social-medias {
     background-color: #61081e;
+}
+
+#social-medias #links {
+    display: flex;
+    justify-content: center;
+}
+
+#social-medias #links img {
+    margin: 0 4vw;
+    height: 5vh;
 }
 
 #footer-info {

@@ -1,11 +1,17 @@
 package repository
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
+	"net/http"
+	"strings"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/guilherme-de-marchi/revancce/api/pkg"
 	"github.com/guilherme-de-marchi/revancce/api/v1/model"
 )
@@ -243,4 +249,90 @@ func ClientTicketCheckin(ctx context.Context, in model.ClientTicketCheckinIn) er
 	)
 
 	return pkg.Error(err)
+}
+
+func ClientTicketPurchasePost(ctx context.Context, in model.ClientTicketPurchasePostIn) (model.ClientTicketPurchasePostOut, error) {
+	var out model.ClientTicketPurchasePostOut
+
+	batches, err := EventBatchGet(ctx, model.EventBatchGetIn{ID: pkg.Varchar{Value: &in.Batch}})
+	if err != nil {
+		return out, pkg.Error(err)
+	}
+	if len(batches) == 0 {
+		return out, pkg.Error(ErrEventBatchNotFound)
+	}
+
+	batch := batches[0]
+
+	tickets, err := EventTicketGet(ctx, model.EventTicketGetIn{ID: pkg.Varchar{Value: &batch.Ticket}})
+	if err != nil {
+		return out, pkg.Error(err)
+	}
+	if len(tickets) == 0 {
+		return out, pkg.Error(ErrEventTicketNotFound)
+	}
+
+	ticket := tickets[0]
+
+	events, err := EventGet(ctx, model.EventGetIn{ID: pkg.Varchar{Value: &ticket.Event}})
+	if err != nil {
+		return out, pkg.Error(err)
+	}
+	if len(tickets) == 0 {
+		return out, pkg.Error(ErrEventBatchNotFound)
+	}
+
+	event := events[0]
+
+	reqBody := model.OpenpixCreateChargeReq{
+		CorrelationID: uuid.NewString(),
+		Value:         batch.Price,
+		Type:          "DYNAMIC",
+		Comment: fmt.Sprintf(
+			"Ingresso '%s' para o evento '%s'",
+			strings.ToUpper(ticket.Name),
+			strings.ToUpper(event.Name),
+		),
+		ExpiresIn: int(time.Hour * 72),
+		AdditionalInfo: []model.OpenpixAdditionalInfo{{
+			Key:   "batch-id",
+			Value: in.Batch,
+		}},
+	}
+
+	rawReqBody, err := json.Marshal(reqBody)
+	if err != nil {
+		return out, pkg.Error(err)
+	}
+
+	req, err := http.NewRequest(
+		http.MethodPost,
+		"https://api.openpix.com.br/api/v1/charge?return_existing=false",
+		bytes.NewBuffer(rawReqBody),
+	)
+	if err != nil {
+		return out, pkg.Error(err)
+	}
+
+	req.Header.Add("Authorization", pkg.OpenpixSecretKey)
+	req.Header.Add("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return out, pkg.Error(err)
+	}
+	defer resp.Body.Close()
+
+	rawRespBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return out, pkg.Error(err)
+	}
+
+	var respBody model.OpenpixCreateChargeResp
+	if err := json.Unmarshal(rawRespBody, &respBody); err != nil {
+		return out, pkg.Error(err)
+	}
+
+	out.PaymentLinkURL = respBody.Charge.PaymentLinkURL
+	return out, nil
 }
