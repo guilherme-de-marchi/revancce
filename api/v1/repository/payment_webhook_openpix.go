@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/base64"
 	"errors"
-	"fmt"
 
 	"github.com/guilherme-de-marchi/revancce/api/pkg"
 	"github.com/guilherme-de-marchi/revancce/api/v1/model"
@@ -84,12 +83,7 @@ func PaymentWebhookOpenpixChargeCompleted(ctx context.Context, in model.PaymentW
 		// mail.NewEmail(in.Name, in.Email),
 		mail.NewEmail(in.Name, pkg.SendGridPurchasesEmail),
 		"",
-		fmt.Sprintf(
-			`
-			<h1>Compra de ingresso confirmada!</h1>
-			<p>Olá %s. Você comprou um ingresso para o evento %s, ingresso %s, no valor de R$%v.</p>
-			Use o qrcode em anexo para entrar no evento.
-		`, client.Name, eventName, ticketName, batchPrice/100),
+		generatePaymentEmailTemplate(client.Name, eventName, ticketName, batchPrice),
 	)
 
 	qrcodePNG, err := qrcode.Encode(outClientTicket.ID, qrcode.Medium, 256)
