@@ -44,7 +44,7 @@ section h2 {
     width: 100%;
 
     font-size: large;
-    text-align: left;
+    text-align: center;
 }
 
 #purchase-ticket {
@@ -109,9 +109,18 @@ section h2 {
     font-weight: bold;
 }
 
-#location img {
-    margin-top: 4vh;
+#location #map-container {
+    height: 70vh;
+    margin: 4vh 0;
+    display: flex;
+    justify-content: center;
+
+    text-align: initial !important;
+}
+
+#location #map-container #map {
     width: 100vw;
+    height: 100%;
 }
 
 #batches * {

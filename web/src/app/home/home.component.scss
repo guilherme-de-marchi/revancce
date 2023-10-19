@@ -2,14 +2,7 @@
     text-align: center;
 }
 
-#main-events h1 {
-    margin-bottom: 2vh;
-    font-size: xx-large;
-    font-weight: bolder;
-    color: #910811;
-}
-
-#main-events #banner {
+#banner {
     width: 100%;
     height: 50vh;
 
@@ -18,9 +11,14 @@
     background-size: cover;
 }
 
-#main-events #description {
-    display: flex;
-    justify-content: space-between;
+#banner p {
+    padding-top: 2vh;
+    color: white;
+}
+
+#description {
+    // display: flex;
+    // justify-content: space-between;
     margin: 2vh 8vw;
 
     font-size: medium;
@@ -28,10 +26,16 @@
     color: #56070c;
 }
 
+#description h1 {
+    margin-bottom: 2vh;
+    font-size: xx-large;
+    font-weight: bolder;
+}
+
 #search-section {
     // position: relative;
     // top: -4vh;
-    margin: 5% 0;
+    margin: 4vh 0;
     text-align: center;
 }
 

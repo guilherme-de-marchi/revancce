@@ -52,3 +52,12 @@ table {
 * {
     font-family: 'Inter';
 }
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+a:hover, a *:hover {
+	cursor: pointer;
+}

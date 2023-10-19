@@ -5,15 +5,14 @@
     <h1>Vibrações Urbanas</h1>
     <h2>Supra Bar Vila Madalena</h2>
     <div id="date-time">
-        <p>19/11/2023</p>
-        <p>17h às 01h</p>
+        <p>Domingo, 19/11/2023, das 17h às 01h</p>
     </div>
 </section>
 <section id="purchase-ticket">
     <h1>Ingressos a partir de: R$15</h1>
     <p>pague com pix</p>
     <a href="/evento/vibracoes-urbanas/#batches"><button>COMPRAR INGRESSOS</button></a>
-    <a>ver lotes</a>
+    <a href="/evento/vibracoes-urbanas/#batches">ver lotes</a>
 </section>
 <section id="description">
     <p>
@@ -61,7 +60,11 @@
         Vila Madalena, São Paulo - SP
         CEP 05417-00
     </p>
-    <img src="../../assets/maps-example.jpg" alt="localização no maps">
+    <div id="map-container">
+        <div id="map">
+            <app-map [coord]="[-46.6923472, -23.5602844]"></app-map>
+        </div>
+    </div>
 </section>
 <section id="batches">
     <h1>LOTES</h1>
