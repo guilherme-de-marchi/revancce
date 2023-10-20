@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BatchesComponent } from './batches.component';
+import { TicketsComponent } from './tickets.component';
 
-describe('BatchComponent', () => {
-  let component: BatchesComponent;
-  let fixture: ComponentFixture<BatchesComponent>;
+describe('Ticketsomponent', () => {
+  let component: TicketsComponent;
+  let fixture: ComponentFixture<TicketsComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [BatchesComponent]
+      imports: [TicketsComponent]
     });
-    fixture = TestBed.createComponent(BatchesComponent);
+    fixture = TestBed.createComponent(TicketsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

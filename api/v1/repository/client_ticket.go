@@ -77,6 +77,7 @@ func ClientTicketGet(ctx context.Context, in model.ClientTicketGetIn) ([]model.C
 		),
 		append(paramsValues, paginationValues...)...,
 	)
+	defer rows.Close()
 	if err != nil {
 		return nil, pkg.Error(err)
 	}

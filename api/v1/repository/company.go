@@ -53,6 +53,7 @@ func CompanyGet(ctx context.Context, in model.CompanyGetIn) ([]model.CompanyGetO
 		),
 		append(paramsValues, paginationValues...)...,
 	)
+	defer rows.Close()
 	if err != nil {
 		return nil, pkg.Error(err)
 	}

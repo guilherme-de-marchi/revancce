@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/guilherme-de-marchi/revancce/api/pkg"
 	v1 "github.com/guilherme-de-marchi/revancce/api/v1"
-	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/redis/go-redis/v9"
 	"github.com/sendgrid/sendgrid-go"
 	"github.com/stripe/stripe-go/v75"
@@ -28,7 +28,7 @@ func Setup(e *gin.Engine) error {
 	)
 
 	var err error
-	pkg.Database, err = pgx.Connect(ctx, pkg.DatabaseURL)
+	pkg.Database, err = pgxpool.New(ctx, pkg.DatabaseURL)
 	if err != nil {
 		return err
 	}

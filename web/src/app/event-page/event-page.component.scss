@@ -13,9 +13,13 @@ section {
     text-align: center;
 }
 
-section p, li, h1, h2, a {
-    margin: 0 10vw;
+section > div {
+    margin: 0 10vh;
 }
+
+// section p, li, h1, h2, a {
+//     margin: 0 10vw;
+// }
 
 section p, li, a {
     font-size: large;
@@ -39,20 +43,36 @@ section h2 {
     font-weight: bold;
 }
 
-#event-basic-info #date-time {
+#info {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 2vh;
+    padding-bottom: 5vh;
+
+    border-bottom: 1px solid rgb(172, 172, 172);
+}
+
+#event-basic-info h1 {
+    font-size: 6vh;
+}
+
+#event-basic-info h2 {
+    font-size: 4vh;
+}
+
+#event-basic-info #date-time p {
     margin-top: 4vh;
     width: 100%;
 
-    font-size: large;
+    font-size: 3vh;
     text-align: center;
 }
 
 #purchase-ticket {
+    margin-top: 5vh;
     padding: 5vh 0;
-
-    border: 1px solid rgb(172, 172, 172);
-    border-right: none;
-    border-left: none;
 }
 
 #purchase-ticket h1 {
@@ -62,9 +82,9 @@ section h2 {
 
 #purchase-ticket button {
     margin: 2vh 0 !important;
-    padding: 3vh 8vw;
+    padding: 3vh 4vw;
 
-    background-color: #D9BB1C;
+    background-color: #F5A201;
     border-style: none;
     border-color: none;
     border-radius: 10px;
@@ -82,12 +102,8 @@ section h2 {
     margin: 5vh 6vw;
 }
 
-#description ul {
-    text-align: left;
-}
-
 #description li {
-    margin-top: 2vh;
+    margin-top: 3vh;
 }
 
 #description b {
@@ -118,20 +134,24 @@ section h2 {
     text-align: initial !important;
 }
 
-#location #map-container #map {
+#map {
     width: 100vw;
     height: 100%;
 }
 
-#batches * {
+#tickets * {
     margin-left: 0 !important;
     margin-right: 0 !important;
 }
 
-#batches > h1 {
+#tickets > div {
+    margin-bottom: 4vh;
+}
+
+#tickets > h1 {
     margin-bottom: 0;
 }
 
-#batches ul {
+#tickets ul {
     margin-top: 4vh;
 }

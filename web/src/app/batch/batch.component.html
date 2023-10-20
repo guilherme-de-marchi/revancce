@@ -1,17 +1,11 @@
-<li>
-    <div class="batch-button" [ngClass]="buttonClass" (click)="toggleBatchInfo()">
-        <h1>{{ticketName}}</h1>
-        <div class="arrow arrow-right" [ngClass]="arrowClass"></div>
-    </div>
-    <div [hidden]="hidden" (click)="purchase()">
-        <div class="batch-info" [ngClass]="infoClass">
-            <h1 class="batch-price">
-                R${{price/100}}
-            </h1>
-            <div>
-                <h1>{{opened?"Aberto":"Fechado"}}</h1>
-                <p>{{opened?"Fecha em " + limitTime:""}}</p>
-            </div>
+<div (click)="purchase()">
+    <div class="batch-info" [ngClass]="infoClass">
+        <h1 class="batch-price">
+            R${{batch.price/100}}
+        </h1>
+        <div>
+            <h1>{{batch.opened?"Aberto":"Fechado"}}</h1>
+            <p>{{batch.opened?"Fecha em " + limitTime:""}}</p>
         </div>
     </div>
-</li>
+</div>

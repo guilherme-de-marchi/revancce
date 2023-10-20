@@ -59,6 +59,7 @@ func ClientGet(ctx context.Context, in model.ClientGetIn) ([]model.ClientGetOut,
 		),
 		append(paramsValues, paginationValues...)...,
 	)
+	defer rows.Close()
 	if err != nil {
 		return nil, pkg.Error(err)
 	}

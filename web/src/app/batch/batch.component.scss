@@ -8,54 +8,6 @@ h1 {
     font-weight: bolder;
 }
 
-* {
-    transition: all .5s;
-}
-
-.batch-button {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 4vh;
-    text-align: left;
-
-    border: 1px solid rgb(172, 172, 172);
-    border-right: none;
-    border-left: none;
-}
-
-.batch-button-closed {
-    background-color: white;
-    color: #56070c;
-}
-
-.batch-button-opened {
-    background-color: #56070c;
-    color: white;
-}
-
-.arrow {
-    transition: none !important;
-}
-
-.arrow-closed {
-    width: 0; 
-    height: 0; 
-    border-top: 2vh solid transparent;
-    border-bottom: 2vh solid transparent;
-    
-    border-left: 2vh solid #8b8b8b;
-}
-
-.arrow-opened {
-    width: 0; 
-    height: 0; 
-    border-left: 2vh solid transparent;
-    border-right: 2vh solid transparent;
-    
-    border-top: 2vh solid white;
-}
-
 .batch-info {
     display: flex;
     align-items: center;

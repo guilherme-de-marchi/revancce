@@ -1,0 +1,13 @@
+<div id="tickets">
+    <ul *ngFor='let ticket of tickets'>
+        <div>
+            <div class="batch-button" [ngClass]="ticket.buttonClass" (click)="toggleBatchInfo(ticket)">
+                <h1>{{ticket.name}}</h1>
+                <div class="arrow arrow-right" [ngClass]="ticket.arrowClass"></div>
+            </div>
+            <ul *ngFor="let batch of ticket.batches | orderBy: 'number'" [hidden]="ticket.hidden">
+                <app-batch [ticket]="ticket" [batch]="batch"></app-batch>
+            </ul>
+        </div>
+    </ul>
+</div>

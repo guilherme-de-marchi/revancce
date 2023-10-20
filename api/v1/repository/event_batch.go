@@ -69,6 +69,7 @@ func EventBatchGet(ctx context.Context, in model.EventBatchGetIn) ([]model.Event
 		),
 		append(paramsValues, paginationValues...)...,
 	)
+	defer rows.Close()
 	if err != nil {
 		return nil, pkg.Error(err)
 	}

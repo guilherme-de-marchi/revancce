@@ -12,6 +12,7 @@ import {Tile as TileLayer, Vector as VectorLayer} from 'ol/layer.js';
 import * as style from 'ol/style';
 import * as proj from 'ol/proj';
 import * as geom from 'ol/geom';
+import * as interaction from 'ol/interaction';
 import * as layer from 'ol/layer';
 import * as source from 'ol/source';
 import OSM from 'ol/source/OSM';
@@ -30,6 +31,7 @@ export class MapComponent implements OnInit {
 
   ngOnInit(){
     this.map = new Map({
+      interactions: interaction.defaults({mouseWheelZoom:false}),
       target: 'map',
       layers: [
         new layer.Tile({
